@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/base.js' %}"></script>
+    <title>Chillx</title>
+</head>
+<body>
+    <header>
+    {% include 'navbar.html' %}
+    {% include 'menu.html'%}
+    </header>
+    
+    <main>
+    {% block content %}
+     {% endblock  %}
+    </main>
+
+    <footer>
+      {% include "footer.html" %}
+    </footer>
+
+    <!-- Loading animation -->
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+</body>
+</html>

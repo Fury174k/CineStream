@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Register</h2>
+        <form method="post" action="">
+            {% csrf_token %}
+            
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            <label for="first_name">First Name:</label>
+            <input type="text" name="first_name" id="first_name" required>
+            
+            <label for="last_name">Last Name:</label>
+            <input type="text" name="last_name" id="last_name" required>
+            
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+            
+            <label for="password1">Password:</label>
+            <input type="password" name="password1" id="password1" required>
+            
+            <label for="password2">Confirm Password:</label>
+            <input type="password" name="password2" id="password2" required>
+            
+            <input type="submit" value="Register" id="register_button">
+        </form>
+        <a href="#" id="forgot_password">Forgotten Password?</a>
+    </div>
+</body>
+</html>

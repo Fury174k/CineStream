@@ -1,0 +1,21 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ celebrity.name }}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/celebrity_profile.css' %}">
+</head>
+<body>
+    <div class="celebrity-profile">
+        <img src="{{ celebrity.profile_picture_url }}" alt="{{ celebrity.name }}" class="celebrity-profile__pic">
+        <h1>{{ celebrity.name }}</h1>
+        <p><strong>Birth Date:</strong> {{ celebrity.birth_date }}</p>
+        <p>
+            <strong>Popularity:</strong> {{ celebrity.popularity }}
+      
+        </p>
+        <p>{{ celebrity.biography }}</p>
+    </div>
+</body>
+</html>
+

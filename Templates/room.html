@@ -1,0 +1,75 @@
+{% extends "base.html" %} {% block content %}
+
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/room.css' %}">
+<script type="text/javascript" src="{% static 'js/room.js' %}"></script>
+
+<title>{{ movie.title }}</title>
+
+{% if movie %}
+<div class="room__container">
+    <div class="movie__section">
+        <div class="movie__details-container">
+            <img id="poster" src="{{ movie.poster_url }}" alt="{{ movie.title }} Poster" />
+            <div id="movie__section-details">
+                <h1>{{ movie.title }}</h1>
+                <p>Genres: {{ movie.genres|join:", " }}</p>
+                <div class="percentage-circle" id="percentage-circle">
+                    <span class="percentage-text" id="percentage-text">{{ movie.user_score_percentage }}</span>
+                </div>
+                <p id="score"> User Score </p>
+                <p>{{ movie.overview }}</p>
+                <p>Release Date: {{ movie.release_date }}</p>
+                <p>Likes: {{ movie.likes }}</p>
+            </div>
+        </div>
+        <div class="cast__details-container">
+            <h2>Cast</h2>
+            <div class="cast__section">
+                {% for cast in cast_details %}
+                <div class="cast__details">
+                    <img src="{{ cast.profile_path }}" alt="{{ cast.name }} Profile" />
+                    <h3>{{ cast.name }}</h3>
+                    <p>{{ cast.character }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="review__section">
+            <h2>Reviews</h2>
+            <div class="comment__section">
+                {% for comment in comments %}
+                <div id="comment">
+                    <h3>@{{ comment.user.username }}</h3>
+                    <h4 id="comment-text">{{ comment.comment_text }}</h4>
+                    <p>{{ comment.date_created }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+
+    <p>Movie not found</p>
+
+    {% endif %}
+
+
+    <div class="room__sidebar">
+        <h2>Similar Movies</h2>
+        <div class="sidebar__section">
+            {% for similar_movie in similar_movies %}
+            <a href="{% url 'room' similar_movie.id %}">
+                <img src="{{ similar_movie.poster_url }}" alt="{{ similar_movie.title }} Poster" />
+                <div class="circle-container">
+                    <h3>{{ similar_movie.title }}</h3>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+.celebrity-profile {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+    background-color: #1c1c1c;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.celebrity-profile__pic {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+.celebrity-profile h1 {
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.celebrity-profile p {
+    font-size: 1.2rem;
+    color: #cccccc;
+    margin-bottom: 10px;
+}
+
+.celebrity-profile p strong {
+    color: #7DF9FF;
+}

@@ -1,0 +1,220 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+:root{
+    --website-theme-color: #7DF9FF;
+    --main-bg-color: #040404;
+    --nav-bg-color: #141414;
+    --menu-bg-color: #222;
+    --header-text-color: #ffffff;
+    --footer-bg-color: #333;
+    --footer-text-color: #fff;
+    --border-color: rgba(255, 255, 255, 0.3);
+}
+
+
+nav {
+    background-color: var(--nav-bg-color);
+    width: 100vw;
+    display: grid;
+    grid-template-columns: auto auto 1fr auto  auto auto;
+    gap: 16px;
+    align-items: center;
+    padding: 10px;
+    padding-inline: 10vw;
+  }
+  
+  nav #logo {
+    font-size: 1.5vw;
+    font-weight: 900;
+    color: var(--header-text-color);
+    padding: 0px 10px 0px 0px;
+    text-decoration: none;
+  }
+  
+  nav #nav-button {
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1vw;
+    background-color: transparent;
+    color: var(--header-text-color);
+    padding: 0px 5px 5px 5px;
+    cursor: pointer;
+  }
+
+  nav #nav-button:hover{
+    background-color: #222
+    }
+
+  nav #nav-button i {
+    padding: 0px 5px 0px 5px;
+    transform: translateY(4px);
+    font-size: 1.5vw;
+  }
+  
+  nav input[type="text"] {
+    width: 100%; 
+    padding: 8px 16px 8px 16px;
+    border: 0.8px solid var(--border-color);
+    border-radius: 5px;
+  }
+
+  .search-container{
+    position: relative;
+    max-width: 700px;
+  }
+
+  .search-container #search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.3vw;
+    font-weight: 500;
+    cursor: pointer;
+    z-index: 5;
+    color: var(--menu-bg-color);
+    pointer-events: none;
+}
+  
+  nav a, nav #search-icon {
+    font-size: 1.2vw;
+    cursor: pointer;
+    color: var(--header-text-color);
+    text-decoration: none;
+  }
+
+  nav #pricing{
+    font-weight: 300;
+    border-radius: 5px;
+    padding: 6px;
+  }
+  
+  nav #sign-up {
+    font-size: 1.1vw;
+    padding: 6px;
+    color: var(--header-text-color);
+    border-radius: 5px;
+    text-decoration: none;
+  }
+
+  nav a:not(#logo):hover{
+    background-color: #222222;
+  }
+
+  nav #wishlist{
+    padding: 6px;
+    border-radius: 5px;
+  }
+
+
+  body{
+    background-color: var(--main-bg-color);
+  }
+
+  #menu-section{
+    position: fixed;
+    top: -250%;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    padding-inline: 15rem;
+    display: flex;
+    justify-content: flex-start;
+    gap: 50px;
+    overflow-y: scroll;
+    align-items: center;
+    flex-direction: column;
+    background-color: var(--menu-bg-color);
+    z-index: 10;
+    transition: 0.3s ease-in-out;
+  }
+
+  #menu-section__top {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    color: var(--header-text-color);
+  }
+
+  #menu-section__top a{
+    color: var(--main-bg-color);
+    border: var(--website-theme-color) 1px solid;
+    padding: 10px;
+    font-weight: 1000;
+    font-size: 1.3vw;
+    border-radius: 5px;
+    cursor: pointer;
+    transform: translateX(-20px);
+    background-color: var(--website-theme-color);
+    text-decoration: none;
+  }
+
+  #menu-section__top #close-menu{
+    border-radius: 50%;
+    background-color: var(--website-theme-color);
+    color: var(--main-bg-color);
+    width: 60px;
+    height: 60px;
+    border: none;
+    font-size: 1.2vw;
+    cursor: pointer;
+  }
+
+  #menu-section__top #close-menu #menu-closeicon{
+    font-size: 1.9vw;
+    font-weight: 300;
+    color: var(--main-bg-color);
+    cursor: pointer;
+    padding: 10px;
+ 
+  }
+
+  #menu-section__container{
+    position: relative;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    row-gap: 80px;
+  }
+  
+#menu-section__container__items {
+  display: flex;
+  text-align: left;
+  flex-direction: column;
+}
+
+#menu-section__container__items h2 {
+  font-size: 1.6vw;
+  color: var(--header-text-color);
+  padding: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  transform: translateX(-40px);
+}
+
+#menu-section__container__items i {
+  font-size: 1.4vw;
+  color: var(--website-theme-color) !important;
+  padding: 6px;
+}
+
+#menu-section__container__items a {
+  color: var(--header-text-color);
+  text-decoration: none;
+  font-size: 1.2vw;
+  padding: 6px;
+  cursor: pointer;
+}
+
+#menu-section__container__items a:hover {
+  text-decoration: underline var(--website-theme-color);
+}

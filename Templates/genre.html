@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ genre_name }} Movies</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/genre.css' %}">
+
+    <div class="container">
+    <h1>Top 20 {{ genre_name }} Movies</h1>
+    <div id="movie-list">
+        {% for movie in movies %}
+            <div class="movie-item">
+                <a href="{% url 'room' id=movie.id %}">
+                <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
+                <h3>{{ movie.title }}</h3>
+                <p>Release Date: {{ movie.release_date }}</p>
+                <p>Rating: {{ movie.vote_average }}</p>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock  %}
+

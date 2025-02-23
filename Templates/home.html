@@ -1,0 +1,272 @@
+{% extends "base.html" %} 
+{% block title %}Homepage{% endblock %}
+{% block content %} 
+{% load static %}
+<link rel="stylesheet" href='{% static "css/home.css" %}' />
+<script type="text/javascript" src="{% static 'js/home.js' %}"></script>
+<div class="main__container">
+  <div class="poster-section">
+    <div id="backdrop-container">
+      <a href="{% url 'room' initial_movie.id %}">
+        <img src="{{ initial_movie.backdrop_url }}" alt="movie-backdrop" id="backdrop" />
+      </a>
+      <i class="bx bxs-chevron-left" id="poster-control"></i>
+      <i class="bx bxs-chevron-right" id="poster-controls"></i>
+    </div>
+    <a id="poster-section-link" href='{% url "room" initial_movie.id %}' data-tilt>
+      <div id="poster-details">
+        <img src="{{ initial_movie.poster_url }}" alt="movie-poster" id="poster" />
+        <a href='{% url "add_to_watchlist" initial_movie.id %}'><i id="wishlist-icon" class="bx bx-bookmark-plus"></i></a>
+        <div id="poster-movie-details">
+          <i class="bx bx-play-circle" id="play-icon"></i>
+          <div id="movie-details">
+            <h2>{{ initial_movie.title }}</h2>
+            <p>Watch the trailer</p>
+            <p>
+              <i class="bx bx-heart" id="upvotes"></i>{{ initial_movie.likes }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+  <div class="movie-list-section">
+    <h2>Up next</h2>
+    <div id="movie-list-container">
+      <!-- Movie list items will be dynamically generated here -->
+      {% for movie in additional_movies %}
+      <a id="second-link" href='{% url "room" movie.id %}'>
+        <div class="movie-card">
+          <img src="{{ movie.poster_url }}" alt="movie-poster" class="movie-card__poster" />
+          <div class="movie-card__details">
+            <h3>{{ movie.title }}</h3>
+            <p>Release Date: {{ movie.release_date }}</p>
+            <p><i class="bx bx-heart"></i>{{ movie.likes }}</p>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    <button id="browse-more-btn">
+      Browse More <i class="bx bx-chevron-right"></i>
+    </button>
+  </div>
+</div>
+
+<div id="featured">
+  <h2>Featured Movies</h2>
+  <div id="featured-container">
+    <a href="{% url 'genre_movies' genre_id=10749 %}">
+      <div id="features">
+        <img src="{% static 'Images/Genre_pics/R.jpg' %}" alt="Genre_pic" id="feature">
+        <h3 id="description">Top 20 Romance Movies</h3>
+      </div>
+    </a>
+    
+    <a href="{% url 'genre_movies' genre_id=28 %}">
+      <div id="features">
+        <img src="{% static 'Images/Genre_pics/A.jpg' %}" alt="Genre_pic" id="feature">
+        <h3 id="description">Top Action Movies</h3>
+      </div>
+    </a>
+    
+    <a href="{% url 'genre_movies' genre_id=27 %}">
+      <div id="features">
+        <img src="{% static 'Images/Genre_pics/H.jpg' %}" alt="Genre_pic" id="feature">
+        <h3 id="description">Best of Horror</h3>
+      </div>
+    </a>
+    
+    <a href="{% url 'genre_movies' genre_id=9648 %}">
+      <div id="features">
+        <img src="{% static 'Images/Genre_pics/M.jpg' %}" alt="Genre_pic" id="feature">
+        <h3 id="description">Best 20 Mystery Movies</h3>
+      </div>
+    </a>
+    
+    <a href="{% url 'genre_movies' genre_id=16 %}">
+      <div id="features">
+        <img src="{% static 'Images/Genre_pics/RA.jpg' %}" alt="Genre_pic" id="feature">
+        <h3 id="description">Find Top 20 Romance Anime</h3>
+      </div>
+    </a>
+  </div>
+</div>
+
+<div class="celebrities-section">
+  <i id="celebrity-list__prev" class="bx bx-chevron-left"></i>
+  <i id="celebrity-list__next" class="bx bx-chevron-right"></i>
+  <h2> Top Celebrities <i class="bx bx-chevron-right"></i></h2>
+  <div id="celebrities-container">
+    <!-- Celebrity list items will be dynamically generated here -->
+    {% for celebrity in celebrities %}
+    <a href="{% url 'celebrity_profile' celebrity.id %}">
+      <div class="celebrity-card" data-tilt data-tilt-max="25" data-tilt-speed="400">
+        <img src="{{ celebrity.profile_picture_url }}" alt="celebrity-profile-pic" class="celebrity-card__pic" />  
+        <h3>{{ celebrity.name }}</h3>
+        <p>({{ celebrity.popularity }})</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="watchlist-section">
+  <h2>Watchlist</h2>
+  <div id="watchlist-container">
+    {% if request.user.is_authenticated %}
+    <!-- Watchlist items will be dynamically generated here -->
+    {% for movie in watchlist %}
+    <div class="watchlist-card">
+      <a href="{% url 'room' movie.id %}">
+        <img src="{{ movie.poster_url }}" alt="movie-poster" class="watchlist-card__poster" />
+        <div class="watchlist-card__details">
+          <h3>{{ movie.title }}</h3>
+          <p>{{ movie.title }}</p>
+          <p><i class="bx bx-heart"></i>{{ movie.likes }}</p>
+        </div>
+      </a>
+      <a href="{% url 'remove_from_watchlist' movie.id %}" class="remove-btn"><i class='bx bx-x'></i></a>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p id="watchlist-login">Login to view your watchlist</p>
+    {% endif %}
+  </div>
+</div>
+
+<div class="top-movies-section">
+  <h2>Top Movies</h2>
+  <i id="top-movie-list__prev" class="bx bx-chevron-left"></i>
+  <i id="top-movie-list__next" class="bx bx-chevron-right"></i>
+  <div id="top-movies-container">
+    <!-- Top movies list items will be dynamically generated here -->
+    {% for movie in top_movies %}
+    <a href="{% url 'room' movie.id %}">
+      <div class="top-movies-card">
+        <img src="{{ movie.poster_url }}" alt="movie-poster" class="top-movies-card__poster" />
+        <div class="top-movies-card__details">
+          <h3>{{ movie.title }}</h3>
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="popular-genre-section">
+  <h2>Popular Genres</h2>
+  <i id="popular-genre-list__prev" class="bx bx-chevron-left"></i>
+  <i id="popular-genre-list__next" class="bx bx-chevron-right"></i>
+  <div id="popular-genre-container">
+    <!-- Popular genre list items will be dynamically generated here -->
+    {% for genre in top_genre %}
+    <a href="{% url 'genre_movies' genre_id=genre.id %}">
+      <div class="popular-genre-card">
+        <img src="{{ genre.poster_url }}" alt="genre-poster" class="popular-genre-card__poster" />
+        <h3>{{ genre.name }}</h3>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="top-box-office">
+  <h2>Top Box Office Movies</h2>
+  <div id="top-box-office-container">
+    <!-- Top box office movies list items will be dynamically generated here -->
+    <div class="column">
+      {% for movie in top_box_office %}
+      {% if forloop.counter0|divisibleby:2 %}
+      <div class="top-box-office-item">
+        <span>{{ forloop.counter }}.</span>
+        <img src="{{ movie.poster_url }}" alt="movie-poster" class="top-box-office-item__poster" />
+        <div class="top-box-office-item__details">
+          <span>{{ movie.title }}</span>
+          <span>Revenue: {{ movie.revenue }}</span>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    <div class="column">
+      {% for movie in top_box_office %}
+      {% if not forloop.counter0|divisibleby:2 %}
+      <div class="top-box-office-item">
+        <span>{{ forloop.counter }}.</span>
+        <img src="{{ movie.poster_url }}" alt="movie-poster" class="top-box-office-item__poster" />
+        <div class="top-box-office-item__details">
+          <span>{{ movie.title }}</span>
+          <span>Revenue: {{ movie.revenue }}</span>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="comingsoon-list">
+  <h2>Coming Soon In Theaters</h2>
+  <i id="comingsoon-list__prev" class="bx bx-chevron-left"></i>
+  <i id="comingsoon-list__next" class="bx bx-chevron-right"></i>
+  <div id="comingsoon-list-container">
+    <!-- Coming soon movies list items will be dynamically generated here -->
+    {% for movie in upcoming_movies %}
+    <a href="{% url 'room' movie.id %}">
+      <div class="comingsoon-list-card">
+        <img src="{{ movie.poster_url }}" alt="movie-poster" class="comingsoon-list-card__poster" />
+        <div class="comingsoon-list-card__details">
+          <h3>{{ movie.title }}</h3>
+          <p><i class="bx bx-play-circle"></i> Play Trailer</p>
+          <p><i class="bx bx-heart"></i>{{ movie.likes }}</p>
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+
+
+
+<div class="top-news">
+  <h2>Top News</h2>
+  <div id="top-news-container">
+    <!-- Top news articles will be dynamically generated here -->
+    {% for article in top_news %}
+    <a href="{{ article.url }}">
+      <div class="top-news-card">
+        <img src="{{ article.image_url }}" alt="news-image" id="news-image">
+        <h3>{{ article.title }}</h3>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="recently-viewed-pages">
+  <h2>Recently Viewed Pages</h2>
+  <div id="recently-viewed-pages-container">
+    <!-- Recently viewed pages list items will be dynamically generated here -->
+    {% for page in recently_viewed_pages %}
+    <a href="{{ page.url }}">
+      <div class="recently-viewed-page-card">
+        <h3>{{ page.title }}</h3>
+        <p>{{ page.summary }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+
+{% if request.user.is_authenticated %}
+<div class="logout-section">
+  <a href="{% url 'logout' %}">Logout</a>
+</div>
+{% else %}
+<div class="login-section">
+  <a href="{% url 'login' %}">Sign-in for more access</a>
+</div>
+{% endif %}
+
+{% endblock %}
