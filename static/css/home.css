@@ -213,6 +213,7 @@
     padding: 0px 20px;
     background: transparent;
     color: white;
+    text-decoration: none;
     border: none;
     cursor: pointer;
     font-size: 1.1rem;
@@ -1303,4 +1304,13 @@ a {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.fade {
+  transition: opacity 0.5s ease-in-out; /* Increased duration */
+  opacity: 1; /* Ensure elements are visible by default */
+}
+
+.fade-out {
+  opacity: 0;
 }

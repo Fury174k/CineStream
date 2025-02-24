@@ -11,4 +11,7 @@ urlpatterns = [
     path('celebrity/<int:id>/', views.celebrity_profile, name='celebrity_profile'),
     path('add_to_watchlist/<int:movie_id>/', views.add_to_watchlist, name='add_to_watchlist'),
     path('remove_from_watchlist/<int:movie_id>/', views.remove_from_watchlist, name='remove_from_watchlist'),
+    path('search/', views.searchMovie, name='search'),
+    path('top_movies/', views.getTop50movies, name='top-50-movies'),
+
 ]

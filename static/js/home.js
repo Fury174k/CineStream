@@ -165,4 +165,40 @@ document.addEventListener('DOMContentLoaded', () => {
         bornTodayContainer.addEventListener('scroll', checkBornTodayScroll);
         checkBornTodayScroll();
     }
+
+    // Control button clicks handling
+    const popularMovies = JSON.parse(document.getElementById('popular-movies-data').textContent);
+    let currentIndex = 0;
+
+    const backdrop = document.getElementById('backdrop');
+    const poster = document.getElementById('poster');
+    const posterLink = document.getElementById('poster-section-link');
+    const wishlistIcon = document.getElementById('wishlist-icon');
+    const movieDetails = document.getElementById('movie-details');
+
+    function updateMovie(index) {
+        const movie = popularMovies[index];
+        backdrop.classList.add('fade-out');
+        poster.classList.add('fade-out');
+        setTimeout(() => {
+          backdrop.src = movie.backdrop_url;
+          poster.src = movie.poster_url;
+          posterLink.href = `/room/${movie.id}`;
+          wishlistIcon.href = `/add_to_watchlist/${movie.id}`;
+          movieDetails.querySelector('h2').textContent = movie.title;
+          movieDetails.querySelector('p:nth-of-type(2)').innerHTML = `<i class="bx bx-heart" id="upvotes"></i>${movie.likes}`;
+          backdrop.classList.remove('fade-out');
+          poster.classList.remove('fade-out');
+        }, 300); // Duration of the fade-out transition
+      }
+
+    document.getElementById('poster-control').addEventListener('click', function() {
+        currentIndex = (currentIndex - 1 + popularMovies.length) % popularMovies.length;
+        updateMovie(currentIndex);
+    });
+
+    document.getElementById('poster-controls').addEventListener('click', function() {
+        currentIndex = (currentIndex + 1) % popularMovies.length;
+        updateMovie(currentIndex);
+    });
 });

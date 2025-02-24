@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/top-movies.css' %}">
+
+<title>TopMovies</title>
+
+<div class="top-movies-container">
+    <h1>Top 50 Movies</h1>
+    <div class="top-movies-list">
+        {% for movie in top_movies %}
+        <div class="top-movie-card">
+            <a href="{% url 'room' movie.id %}">
+                <span class="movie-rank">{{ forloop.counter }}.</span>
+                <img src="{{ movie.poster_url }}" alt="{{ movie.title }}" class="top-movie-poster">
+                <div class="top-movie-details">
+                    <h3>{{ movie.title }} ({{ movie.year_released }})</h3>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

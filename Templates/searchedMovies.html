@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Search Results{% endblock %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href='{% static "css/search.css" %}' />
+
+<div class="search-results-container">
+    <h2>Search Results for "{{ query }}"</h2>
+    <div class="search-results">
+        {% if searched_movies %}
+            {% for movie in searched_movies %}
+                <div class="search-result-card">
+                    <a href="{% url 'room' movie.id %}">
+                        <img src="{{ movie.poster_url }}" alt="{{ movie.title }}" class="search-result-poster">
+                        <div class="search-result-details">
+                            {% if movie.year_released %}
+                                <h3>{{ movie.title }} ({{ movie.year_released }})</h3>
+                            {% else %}
+                                <h3>{{ movie.title }}</h3>
+                            {% endif %}
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No results found for "{{ query }}".</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -2,7 +2,9 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-
+import json
+from django.core.management import call_command
+from django.db import IntegrityError
 
 def main():
     """Run administrative tasks."""
@@ -17,6 +19,16 @@ def main():
         ) from exc
     execute_from_command_line(sys.argv)
 
+def load_data():
+    try:
+        with open('data.json', 'r', encoding='utf-8') as file:
+            data = json.load(file)
+            call_command('loaddata', 'data.json')
+    except IntegrityError as e:
+        print(f"Error loading data: {e}")
+    except UnicodeDecodeError as e:
+        print(f"Encoding error: {e}")
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
+    load_data()

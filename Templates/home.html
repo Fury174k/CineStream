@@ -7,23 +7,23 @@
 <div class="main__container">
   <div class="poster-section">
     <div id="backdrop-container">
-      <a href="{% url 'room' initial_movie.id %}">
-        <img src="{{ initial_movie.backdrop_url }}" alt="movie-backdrop" id="backdrop" />
+      <a href="{% url 'room' popular_movies.0.id %}">
+        <img src="{{ popular_movies.0.backdrop_url }}" alt="movie-backdrop" id="backdrop" class="fade" />
       </a>
       <i class="bx bxs-chevron-left" id="poster-control"></i>
       <i class="bx bxs-chevron-right" id="poster-controls"></i>
     </div>
-    <a id="poster-section-link" href='{% url "room" initial_movie.id %}' data-tilt>
+    <a id="poster-section-link" href='{% url "room" popular_movies.0.id %}'>
       <div id="poster-details">
-        <img src="{{ initial_movie.poster_url }}" alt="movie-poster" id="poster" />
-        <a href='{% url "add_to_watchlist" initial_movie.id %}'><i id="wishlist-icon" class="bx bx-bookmark-plus"></i></a>
+        <img src="{{ popular_movies.0.poster_url }}" alt="movie-poster" id="poster" class="fade" />
+        <a href='{% url "add_to_watchlist" popular_movies.0.id %}'><i id="wishlist-icon" class="bx bx-bookmark-plus"></i></a>
         <div id="poster-movie-details">
           <i class="bx bx-play-circle" id="play-icon"></i>
           <div id="movie-details">
-            <h2>{{ initial_movie.title }}</h2>
+            <h2>{{ popular_movies.0.title }}</h2>
             <p>Watch the trailer</p>
             <p>
-              <i class="bx bx-heart" id="upvotes"></i>{{ initial_movie.likes }}
+              <i class="bx bx-heart" id="upvotes"></i>{{ popular_movies.0.likes }}
             </p>
           </div>
         </div>
@@ -47,9 +47,9 @@
       </a>
       {% endfor %}
     </div>
-    <button id="browse-more-btn">
+    <a href='{% url "top-50-movies" %}' id="browse-more-btn">
       Browse More <i class="bx bx-chevron-right"></i>
-    </button>
+    </a>
   </div>
 </div>
 
@@ -269,4 +269,45 @@
 </div>
 {% endif %}
 
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const popularMovies = {{ popular_movies|safe }};
+    let currentIndex = 0;
+
+    const backdrop = document.getElementById('backdrop');
+    const poster = document.getElementById('poster');
+    const posterLink = document.getElementById('poster-section-link');
+    const wishlistIcon = document.getElementById('wishlist-icon');
+    const movieDetails = document.getElementById('movie-details');
+
+    function updateMovie(index) {
+      const movie = popularMovies[index];
+      backdrop.classList.add('fade-out');
+      poster.classList.add('fade-out');
+
+      setTimeout(() => {
+        backdrop.src = movie.backdrop_url;
+        poster.src = movie.poster_url;
+        posterLink.href = `/room/${movie.id}`;
+        wishlistIcon.href = `/add_to_watchlist/${movie.id}`;
+        movieDetails.querySelector('h2').textContent = movie.title;
+        movieDetails.querySelector('p:nth-of-type(2)').innerHTML = `<i class="bx bx-heart" id="upvotes"></i>${movie.likes}`;
+
+        // Remove fade-out class after updating content
+        backdrop.classList.remove('fade-out');
+        poster.classList.remove('fade-out');
+      }, 300); // Duration of the fade-out transition
+    }
+
+    document.getElementById('poster-control').addEventListener('click', function() {
+      currentIndex = (currentIndex - 1 + popularMovies.length) % popularMovies.length;
+      updateMovie(currentIndex);
+    });
+
+    document.getElementById('poster-controls').addEventListener('click', function() {
+      currentIndex = (currentIndex + 1) % popularMovies.length;
+      updateMovie(currentIndex);
+    });
+  });
+</script>
 {% endblock %}

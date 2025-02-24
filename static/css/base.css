@@ -68,6 +68,11 @@ nav {
     max-width: 700px;
   }
 
+  .search-container button{
+    border: none;
+    background-color: transparent;
+  }
+
   .search-container #search-icon {
     position: absolute;
     right: 10px;

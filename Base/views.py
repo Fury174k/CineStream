@@ -10,27 +10,30 @@ from django.contrib.auth.decorators import login_required
 # Create your views here
 def homepage(request):
     api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
-    initial_movie_id = 939243 
-    additional_movie_ids = [1203329, 822119, 799766]
     base_url = 'https://api.themoviedb.org/3/movie/{}?api_key={}'
+    placeholder_image = '/static/Images/placeholders/image_placeholder.png'
 
     try:
-        # Fetch initial movie data
-        initial_response = requests.get(base_url.format(initial_movie_id, api_key))
-        initial_data = initial_response.json()
+        # Fetch top three most popular movies
+        response = requests.get(base_url.format('popular', api_key))
+        data = response.json().get('results', [])[:3]
 
-        initial_movie = {
-            'id': initial_movie_id,
-            'title': initial_data.get('title'),
-            'overview': initial_data.get('overview'),
-            'release_date': initial_data.get('release_date'),
-            'poster_url': f"https://image.tmdb.org/t/p/original{initial_data.get('poster_path')}" if initial_data.get('poster_path') else None,
-            'backdrop_url': f"https://image.tmdb.org/t/p/original{initial_data.get('backdrop_path')}" if initial_data.get('backdrop_path') else None,
-            'likes': initial_data.get('vote_count'),
-            'genres': [genre['name'] for genre in initial_data.get('genres', [])]
-        }
+        popular_movies = [
+            {
+                'id': movie.get('id'),
+                'title': movie.get('title'),
+                'overview': movie.get('overview'),
+                'release_date': movie.get('release_date'),
+                'poster_url': f"https://image.tmdb.org/t/p/original{movie.get('poster_path')}" if movie.get('poster_path') else placeholder_image,
+                'backdrop_url': f"https://image.tmdb.org/t/p/original{movie.get('backdrop_path')}" if movie.get('backdrop_path') else placeholder_image,
+                'likes': movie.get('vote_count'),
+                'genres': [genre['name'] for genre in movie.get('genres', [])]
+            }
+            for movie in data
+        ]
 
         # Fetch additional movies data
+        additional_movie_ids = [1203329, 822119, 799766]
         additional_movies = []
         for movie_id in additional_movie_ids:
             response = requests.get(base_url.format(movie_id, api_key))
@@ -41,8 +44,8 @@ def homepage(request):
                 'title': data.get('title'),
                 'overview': data.get('overview'),
                 'release_date': data.get('release_date'),
-                'poster_url': f"https://image.tmdb.org/t/p/original{data.get('poster_path')}" if data.get('poster_path') else None,
-                'backdrop_url': f"https://image.tmdb.org/t/p/original{data.get('backdrop_path')}" if data.get('backdrop_path') else None,
+                'poster_url': f"https://image.tmdb.org/t/p/original{data.get('poster_path')}" if data.get('poster_path') else placeholder_image,
+                'backdrop_url': f"https://image.tmdb.org/t/p/original{data.get('backdrop_path')}" if data.get('backdrop_path') else placeholder_image,
                 'likes': data.get('vote_count'),
                 'genres': [genre['name'] for genre in data.get('genres', [])]
             }
@@ -58,7 +61,7 @@ def homepage(request):
             {
                 'id': celeb.get('id'),
                 'name': celeb.get('name'),
-                'profile_picture_url': f"https://image.tmdb.org/t/p/original{celeb.get('profile_path')}" if celeb.get('profile_path') else None,
+                'profile_picture_url': f"https://image.tmdb.org/t/p/original{celeb.get('profile_path')}" if celeb.get('profile_path') else placeholder_image,
                 'biography': celeb.get('biography', 'Biography not available.'),
                 'birth_date': celeb.get('birthday'),
                 'popularity': celeb.get('popularity')
@@ -76,7 +79,7 @@ def homepage(request):
                 movie = {
                     'id': entry.movie_id,
                     'title': data.get('title'),
-                    'poster_url': f"https://image.tmdb.org/t/p/original{data.get('poster_path')}" if data.get('poster_path') else None,
+                    'poster_url': f"https://image.tmdb.org/t/p/original{data.get('poster_path')}" if data.get('poster_path') else placeholder_image,
                     'release_date': data.get('release_date'),
                     'likes': data.get('vote_count')
                 }
@@ -89,7 +92,7 @@ def homepage(request):
         top_news = get_top_news()
 
         context = {
-            'initial_movie': initial_movie,
+            'popular_movies': popular_movies,
             'additional_movies': additional_movies,
             'celebrities': celebrities,
             'watchlist': watchlist,
@@ -119,6 +122,7 @@ def roomPage(request, id):
     api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
     base_url = 'https://api.themoviedb.org/3/movie/{}?api_key={}'
     similar_movies_url = f'https://api.themoviedb.org/3/movie/{id}/similar?api_key={api_key}'
+    placeholder_image = '/static/Images/placeholders/image_placeholder.png'
 
     try:
         # Fetch movie data
@@ -133,8 +137,8 @@ def roomPage(request, id):
             'title': data.get('title'),
             'overview': data.get('overview'),
             'release_date': data.get('release_date'),
-            'poster_url': f"https://image.tmdb.org/t/p/original{data.get('poster_path')}" if data.get('poster_path') else None,
-            'backdrop_url': f"https://image.tmdb.org/t/p/original{data.get('backdrop_path')}" if data.get('backdrop_path') else None,
+            'poster_url': f"https://image.tmdb.org/t/p/original{data.get('poster_path')}" if data.get('poster_path') else placeholder_image,
+            'backdrop_url': f"https://image.tmdb.org/t/p/original{data.get('backdrop_path')}" if data.get('backdrop_path') else placeholder_image,
             'likes': data.get('vote_count'),
             'genres': [genre['name'] for genre in data.get('genres', [])],
             'user_score_percentage': user_score_percentage,
@@ -160,7 +164,7 @@ def roomPage(request, id):
             {
                 'id': sm.get('id'),
                 'title': sm.get('title'),
-                'poster_url': f"https://image.tmdb.org/t/p/original{sm.get('poster_path')}" if sm.get('poster_path') else None
+                'poster_url': f"https://image.tmdb.org/t/p/original{sm.get('poster_path')}" if sm.get('poster_path') else placeholder_image
             }
             for sm in similar_movies_data
         ]
@@ -174,7 +178,7 @@ def roomPage(request, id):
             {
                 'name': member['name'],
                 'character': member['character'],
-                'profile_path': f"https://image.tmdb.org/t/p/original{member['profile_path']}" if member['profile_path'] else None
+                'profile_path': f"https://image.tmdb.org/t/p/original{member['profile_path']}" if member['profile_path'] else placeholder_image
             }
             for member in credits_data.get('cast', [])
         ]
@@ -417,9 +421,75 @@ def get_top_news():
             'title': article.get('title'),
             'url': article.get('url'),
             'summary': article.get('description'),
-            'image_url': article.get('urlToImage') if article.get('urlToImage') else '/static/images/default_news.jpg'
+            'image_url': article.get('urlToImage') if article.get('urlToImage') else 'static/Images/placeholders/image_placeholder.png'
         }
         for article in data
     ]
     return top_news
+
+def searchMovie(request):
+    q = request.GET.get('q') if request.GET.get('q') else ''
+    api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
+    search_url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={q}'
+    placeholder_image = '/static/Images/placeholders/image_placeholder.png'
+
+    try:
+        response = requests.get(search_url)
+        data = response.json().get('results', [])[:10]
+
+        searched_movies = [
+            {
+                'id': movie.get('id'),
+                'title': movie.get('title'),
+                'poster_url': f"https://image.tmdb.org/t/p/original{movie.get('poster_path')}" if movie.get('poster_path') else placeholder_image,
+                'year_released': movie.get('release_date', '')[:4],  # Extract the year from the release date
+                'likes': movie.get('vote_count')
+            }
+            for movie in data
+        ]
+
+        context = {
+            'searched_movies': searched_movies,
+            'query': q,
+        }
+        return render(request, 'searchedMovies.html', context)
+    except requests.RequestException as e:
+        messages.error(request, "Failed to fetch data from the external API.")
+        return render(request, 'searchedMovies.html', {'error': str(e), 'query': q})
+
+def getTop50movies(request):
+    api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
+    base_url = 'https://api.themoviedb.org/3/movie/top_rated?api_key={}&page={}'
+    placeholder_image = '/static/Images/placeholders/image_placeholder.png'
+    
+    all_top_movies = []
+    page = 1
+    while True:
+        response = requests.get(base_url.format(api_key, page))
+        data = response.json()
+        
+        if 'results' not in data or not data['results']:
+            break
+        
+        movies = data['results']
+        for movie in movies:
+            movie_data = {
+                'id': movie.get('id'),
+                'title': movie.get('title'),
+                'poster_url': f"https://image.tmdb.org/t/p/original{movie.get('poster_path')}" if movie.get('poster_path') else placeholder_image,
+                'year_released': movie.get('release_date', '')[:4],
+                'rating': movie.get('vote_average'),
+                'likes': movie.get('vote_count'),
+            }
+            all_top_movies.append(movie_data)
+        
+        if len(all_top_movies) >= 50 or page >= data.get('total_pages', page):
+            break
+        
+        page += 1
+    
+    context = {
+        'top_movies': all_top_movies[:50],
+    }
+    return render(request, 'top-50-movies.html', context)
 
