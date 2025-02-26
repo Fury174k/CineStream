@@ -600,3 +600,7 @@ def pricingPage(request):
     return render(request, 'pricing.html')
 
 
+def creditPage(request):
+    return render(request, 'credits.html')
+
+

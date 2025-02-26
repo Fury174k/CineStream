@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}
+Credits
+{% endblock %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/credits.css' %}">
+
+<div class="credits-container">
+    <h1>Credits</h1>
+    <div class="credits-list">
+        <div class="credit-card">
+            <img src="{% static 'images/credits/developer.jpg' %}" alt="Developer" class="credit-image">
+            <div class="credit-details">
+                <h3>Designer & Developer</h3>
+                <p>Nanashi</p>
+                <p>
+                    <a href="https://www.linkedin.com/in/johnsmith/" target="_blank">LinkedIn</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="api-credits">
+        <h2>API Credits</h2>
+        <ul>
+            <li>
+                <a href="https://www.themoviedb.org/" target="_blank">TMDb API</a>
+            </li>
+            <li>
+                <a href="https://www.pexels.com/" target="_blank">Pexels API</a>
+            </li>
+            <li>
+                <a href="https://newsapi.org/" target="_blank">News API</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+{% endblock %}

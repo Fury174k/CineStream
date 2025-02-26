@@ -16,5 +16,6 @@ urlpatterns = [
     path('top_movies/', views.getTop50movies, name='top-50-movies'),
     path('save_comment/', views.save_comment, name='save_comment'),
     path('pricing/', views.pricingPage, name='pricing'),
+    path('credits/', views.creditPage, name='credit'),
     path('clear_recently_viewed/', views.clear_recently_viewed, name='clear_recently_viewed'),
 ]
