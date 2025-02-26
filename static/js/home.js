@@ -181,24 +181,31 @@ document.addEventListener('DOMContentLoaded', () => {
         backdrop.classList.add('fade-out');
         poster.classList.add('fade-out');
         setTimeout(() => {
-          backdrop.src = movie.backdrop_url;
-          poster.src = movie.poster_url;
-          posterLink.href = `/room/${movie.id}`;
-          wishlistIcon.href = `/add_to_watchlist/${movie.id}`;
-          movieDetails.querySelector('h2').textContent = movie.title;
-          movieDetails.querySelector('p:nth-of-type(2)').innerHTML = `<i class="bx bx-heart" id="upvotes"></i>${movie.likes}`;
-          backdrop.classList.remove('fade-out');
-          poster.classList.remove('fade-out');
+            backdrop.src = movie.backdrop_url;
+            poster.src = movie.poster_url;
+            posterLink.href = `/room/${movie.id}`;
+            wishlistIcon.href = `/add_to_watchlist/${movie.id}`;
+            movieDetails.querySelector('h2').textContent = movie.title;
+            movieDetails.querySelector('p:nth-of-type(2)').innerHTML = `<i class="bx bx-heart" id="upvotes"></i>${movie.likes}`;
+            backdrop.classList.remove('fade-out');
+            poster.classList.remove('fade-out');
         }, 300); // Duration of the fade-out transition
-      }
+    }
+
+    function stopSlideshow() {
+        clearInterval(slideshowInterval);
+    }
 
     document.getElementById('poster-control').addEventListener('click', function() {
         currentIndex = (currentIndex - 1 + popularMovies.length) % popularMovies.length;
         updateMovie(currentIndex);
+        stopSlideshow();
     });
 
     document.getElementById('poster-controls').addEventListener('click', function() {
         currentIndex = (currentIndex + 1) % popularMovies.length;
         updateMovie(currentIndex);
+        stopSlideshow();
     });
+
 });

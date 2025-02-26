@@ -6,6 +6,8 @@ from .models import Comment, Room, Celebrity, Watchlist
 import requests
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here
 def homepage(request):
@@ -91,6 +93,8 @@ def homepage(request):
         upcoming_movies = get_upcoming_movies()
         top_news = get_top_news()
 
+        track_recently_viewed(request, 'Homepage', request.path, 'Welcome to the homepage of Chillx.')
+
         context = {
             'popular_movies': popular_movies,
             'additional_movies': additional_movies,
@@ -101,6 +105,7 @@ def homepage(request):
             'top_box_office': top_box_office,
             'upcoming_movies': upcoming_movies,
             'top_news': top_news,
+            'recently_viewed_pages': request.session.get('recently_viewed', []),
         }
 
         return render(request, 'home.html', context)
@@ -117,6 +122,8 @@ def add_to_watchlist(request, movie_id):
 def remove_from_watchlist(request, movie_id):
     Watchlist.objects.filter(user=request.user, movie_id=movie_id).delete()
     return redirect('home')
+
+
 
 def roomPage(request, id):
     api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
@@ -185,18 +192,42 @@ def roomPage(request, id):
 
         comments = Comment.objects.filter(room=room).order_by('date_created')
 
+        track_recently_viewed(request, movie['title'], request.path, movie['overview'])
+
         context = {
             'movie': movie,
             'similar_movies': similar_movies,
             'cast_details': cast_details,
             'comments': comments,
             'room': room,
+            'recently_viewed_pages': request.session.get('recently_viewed', []),
         }
 
         return render(request, 'room.html', context)
     except requests.RequestException as e:
         messages.error(request, "Failed to fetch data from the external API.")
         return render(request, 'room.html', {'error': str(e)})
+    
+
+@csrf_exempt
+@login_required
+def save_comment(request):
+    if request.method == 'POST':
+        user = request.user
+        room_id = request.POST.get('room_id')
+        comment_text = request.POST.get('comment_text')
+
+        if room_id and comment_text:
+            room = get_object_or_404(Room, id=room_id)
+            Comment.objects.create(user=user, room=room, comment_text=comment_text)
+            messages.success(request, 'Comment saved successfully.')
+        else:
+            messages.error(request, 'Invalid data.')
+            return redirect('home')
+        
+        return redirect('room', id=room.tmdb_id)
+
+    
 
 def loginPage(request):
     if request.method == 'POST':
@@ -403,7 +434,7 @@ def get_upcoming_movies():
             'id': movie.get('id'),
             'title': movie.get('title'),
             'release_date': movie.get('release_date'),
-            'poster_url': f"https://image.tmdb.org/t/p/w92{movie.get('poster_path')}" if movie.get('poster_path') else None,
+            'backdrop_url': f"https://image.tmdb.org/t/p/original{movie.get('backdrop_path')}" if movie.get('backdrop_path') else None,
             'likes': movie.get('vote_count')
         }
         for movie in data
@@ -492,4 +523,33 @@ def getTop50movies(request):
         'top_movies': all_top_movies[:50],
     }
     return render(request, 'top-50-movies.html', context)
+
+def clear_recently_viewed(request):
+    request.session['recently_viewed'] = []
+    return redirect('home')
+
+def track_recently_viewed(request, page_title, page_url, page_summary):
+    def truncate_summary(summary, max_words=50):
+        words = summary.split()
+        if len(words) > max_words:
+            return ' '.join(words[:max_words]) + '...'
+        return summary
+
+    recently_viewed = request.session.get('recently_viewed', [])
+    page_data = {
+        'title': page_title,
+        'url': page_url,
+        'summary': truncate_summary(page_summary)
+    }
+
+    if page_data in recently_viewed:
+        recently_viewed.remove(page_data)
+    recently_viewed.insert(0, page_data)
+
+    if len(recently_viewed) > 10:
+        recently_viewed = recently_viewed[:10]
+
+    request.session['recently_viewed'] = recently_viewed
+
+
 

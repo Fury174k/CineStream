@@ -912,7 +912,7 @@ a {
 .comingsoon-list-card__poster {
   width: 100%;
   border-radius: 10px;
-  height: 250px; /* Increased height */
+  height: 250px; /* Adjusted height */
   object-fit: cover;
   margin: 0 auto 10px;
   transition: transform 0.3s, filter 0.3s;
@@ -1198,8 +1198,8 @@ a {
 }
 
 #recently-viewed-pages-container {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
   justify-content: center;
   height: 100%; /* Definite height */
@@ -1212,8 +1212,8 @@ a {
   border-radius: 10px;
   margin: 10px;
   text-align: center;
-  width: 180px;
-  height: 250px;
+  width: 350px;
+  height: 100px;
   padding: 10px;
   transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
 }
@@ -1245,8 +1245,43 @@ a {
   color: #ffffff;
 }
 
+.clearbtn {
+  padding: 10px 20px;
+  background-color: var(--website-theme-color);
+  color: #000;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.clearbtn:hover {
+  background-color: #fff;
+  color: var(--website-theme-color);
+}
+
+.clear-recently-viewed-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px 20px;
+  background-color: var(--website-theme-color);
+  color: #000;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  margin-top: 20px;
+}
+
+.clear-recently-viewed-btn:hover {
+  background-color: #fff;
+  color: var(--website-theme-color);
+}
+
 .logout-section, .login-section {
   width: 80%;
+  height: 250px;
   margin: 20px auto;
   text-align: center;
 }
@@ -1260,6 +1295,17 @@ a {
 
 .logout-section a:hover, .login-section a:hover {
   color: #ffffff;
+}
+
+.logout-section a{
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: var(--website-theme-color);
+  color: #000;
+  font-size: 1.2rem;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .login-section a {

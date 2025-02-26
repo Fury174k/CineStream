@@ -1,22 +1,20 @@
-console.log("Hello world!");
-
 document.addEventListener('DOMContentLoaded', () => {
-    navButton = document.getElementById('nav-button');
-    menuSection = document.getElementById('menu-section'); 
-    closeMenu = document.getElementById('close-menu');
+    const navButton = document.getElementById('nav-button');
+    const menuSection = document.getElementById('menu-section'); 
+    const closeMenu = document.getElementById('close-menu');
     let menuIsActive = false;
 
     navButton.addEventListener('click', () => {
         if (!menuIsActive) {
             menuSection.style.top = '0';
-            menuSection.display = 'flex';
+            menuSection.style.display = 'flex';
             menuIsActive = true;
         }
     });
 
     closeMenu.addEventListener('click', () => {
         menuSection.style.top = '-250%';
-        menuSection.display = 'none';
+        menuSection.style.display = 'none';
         menuIsActive = false;
     });
 
@@ -35,6 +33,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Hide loading animation after the page has fully loaded
     window.addEventListener('load', hideLoading);
+
+    // Hide loading animation if the page is loaded from the cache
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            hideLoading();
+        }
+    });
 
     // Show loading animation when a link is clicked
     document.querySelectorAll('a').forEach(link => {

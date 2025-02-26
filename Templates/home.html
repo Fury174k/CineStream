@@ -215,7 +215,7 @@
     {% for movie in upcoming_movies %}
     <a href="{% url 'room' movie.id %}">
       <div class="comingsoon-list-card">
-        <img src="{{ movie.poster_url }}" alt="movie-poster" class="comingsoon-list-card__poster" />
+        <img src="{{ movie.backdrop_url }}" alt="backdrop-poster" class="comingsoon-list-card__poster" />
         <div class="comingsoon-list-card__details">
           <h3>{{ movie.title }}</h3>
           <p><i class="bx bx-play-circle"></i> Play Trailer</p>
@@ -226,8 +226,6 @@
     {% endfor %}
   </div>
 </div>
-
-
 
 <div class="top-news">
   <h2>Top News</h2>
@@ -246,6 +244,10 @@
 
 <div class="recently-viewed-pages">
   <h2>Recently Viewed Pages</h2>
+  <form method="post" action="{% url 'clear_recently_viewed' %}">
+    {% csrf_token %}
+    <button type="submit" class="clear-recently-viewed-btn">Clear Recently Viewed</button>
+  </form>
   <div id="recently-viewed-pages-container">
     <!-- Recently viewed pages list items will be dynamically generated here -->
     {% for page in recently_viewed_pages %}
@@ -268,6 +270,9 @@
   <a href="{% url 'login' %}">Sign-in for more access</a>
 </div>
 {% endif %}
+
+<!-- Add a hidden element to store the popular movies data -->
+<script type="application/json" id="popular-movies-data">{{ popular_movies|escapejs }}</script>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {

@@ -17,5 +17,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Call the function to update the circle based on the user score percentage from HTML
     updatePercentageCircle();
+
+    // Function to open the comment overlay
+    window.openCommentOverlay = function() {
+        document.getElementById('comment-overlay').style.display = 'flex';
+    };
+
+    // Function to close the comment overlay
+    window.closeCommentOverlay = function() {
+        document.getElementById('comment-overlay').style.display = 'none';
+    };
+
+  
 });
 
