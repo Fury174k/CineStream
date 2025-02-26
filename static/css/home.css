@@ -371,6 +371,7 @@ a {
   height: 250px;
   padding: 10px;
   transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+  cursor: pointer;
 }
 
 .celebrity-card:hover {
