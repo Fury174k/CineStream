@@ -525,8 +525,9 @@ def getTop50movies(request):
                 'title': movie.get('title'),
                 'poster_url': f"https://image.tmdb.org/t/p/original{movie.get('poster_path')}" if movie.get('poster_path') else placeholder_image,
                 'year_released': movie.get('release_date', '')[:4],
-                'rating': movie.get('vote_average'),
-                'likes': movie.get('vote_count'),
+                'overview': movie.get('overview'),
+                'popularity': movie.get('popularity'),
+                'genres': ', '.join(genre['name'] for genre in movie.get('genres', [])),
             }
             all_top_movies.append(movie_data)
         
@@ -567,5 +568,35 @@ def track_recently_viewed(request, page_title, page_url, page_summary):
 
     request.session['recently_viewed'] = recently_viewed
 
+
+@login_required
+def watchlistPage(request):
+    api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
+    base_url = 'https://api.themoviedb.org/3/movie/{}?api_key={}'
+    placeholder_image = '/static/Images/placeholders/image_placeholder.png'
+
+    watchlist = []
+    watchlist_entries = Watchlist.objects.filter(user=request.user)
+    for entry in watchlist_entries:
+        response = requests.get(base_url.format(entry.movie_id, api_key))
+        data = response.json()
+        movie = {
+            'id': entry.movie_id,
+            'title': data.get('title'),
+            'poster_url': f"https://image.tmdb.org/t/p/original{data.get('poster_path')}" if data.get('poster_path') else placeholder_image,
+            'release_date': data.get('release_date'),
+            'likes': data.get('vote_count')
+        }
+        watchlist.append(movie)
+
+    context = {
+        'watchlist': watchlist
+    }
+
+    return render(request, 'watchlist.html', context)
+
+
+def pricingPage(request):
+    return render(request, 'pricing.html')
 
 

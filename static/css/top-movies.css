@@ -88,17 +88,19 @@
     flex: 1;
 }
 
-.movie-details h3 {
+.top-movie-details h3 {
     font-size: 1.4rem;
+    color: white;
     margin-bottom: 10px;
     transition: color 0.3s;
 }
 
-.top-movie-card:hover .movie-details h3 {
+.top-movie-card:hover .top-movie-details h3 {
     color: var(--website-theme-color);
 }
 
-.movie-details p {
+.top-movie-details p {
+    color: #cccccc;
     font-size: 1.1rem;
     margin-bottom: 5px;
 }

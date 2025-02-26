@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Watchlist{% endblock title %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/watchlist.css' %}">
+
+<div class="watchlist-container">
+    <h1>Your Watchlist</h1>
+    {% if watchlist %}
+        <div class="watchlist-grid">
+            {% for movie in watchlist %}
+                <div class="watchlist-item">
+                    <a href="{% url 'room' movie.id %}">
+                        <img src="{{ movie.poster_url }}" alt="{{ movie.title }}">
+                        <div class="movie-details">
+                            <h3>{{ movie.title }}</h3>
+                            <p>Release Date: {{ movie.release_date }}</p>
+                            <p><i class="bx bx-heart"></i>{{ movie.likes }}</p>
+                        </div>
+                    </a>
+                    <a href="{% url 'remove_from_watchlist' movie.id %}" class="remove-btn"><i class='bx bx-x'></i></a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Your watchlist is empty. Start adding some movies!</p>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,67 @@
+.watchlist-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: var(--header-text-color);
+}
+
+.watchlist-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2.5vw;
+}
+
+.watchlist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.watchlist-item {
+    position: relative;
+    background-color: var(--menu-bg-color);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+}
+
+.watchlist-item:hover {
+    transform: scale(1.05);
+}
+
+.watchlist-item img {
+    width: 100%;
+    height: auto;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.movie-details {
+    padding: 10px;
+}
+
+.movie-details h3 {
+    font-size: 1.5vw;
+    margin-bottom: 10px;
+}
+
+.movie-details p {
+    font-size: 1.2vw;
+    margin-bottom: 5px;
+}
+
+.remove-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: var(--header-text-color);
+    border: none;
+    border-radius: 50%;
+    padding: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.remove-btn:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}

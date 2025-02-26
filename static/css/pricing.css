@@ -1,0 +1,67 @@
+.pricing-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: var(--header-text-color);
+}
+
+.pricing-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2.5vw;
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.pricing-card {
+    background-color: var(--menu-bg-color);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.pricing-card:hover {
+    transform: scale(1.05);
+}
+
+.pricing-card h2 {
+    font-size: 2vw;
+    margin-bottom: 10px;
+}
+
+.pricing-card .price {
+    font-size: 1.8vw;
+    margin-bottom: 20px;
+    color: var(--website-theme-color);
+}
+
+.pricing-card ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.pricing-card ul li {
+    font-size: 1.2vw;
+    margin-bottom: 10px;
+}
+
+.select-plan-btn {
+    background-color: var(--website-theme-color);
+    color: var(--main-bg-color);
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1.2vw;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.select-plan-btn:hover {
+    background-color: #5ec2d1;
+}

@@ -33,5 +33,19 @@
     <div class="loading-overlay">
         <div class="loading-spinner"></div>
     </div>
+
+    <!-- Alert container -->
+    <div id="alert-container"></div>
+
+    <!-- Display messages from Django -->
+    {% if messages %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            {% for message in messages %}
+            showAlert('{{ message.tags }}', '{{ message }}');
+            {% endfor %}
+        });
+    </script>
+    {% endif %}
 </body>
 </html>

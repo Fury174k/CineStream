@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Pricing{% endblock title %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/pricing.css' %}">
+
+<div class="pricing-container">
+    <h1>Choose Your Plan</h1>
+    <div class="pricing-grid">
+        <div class="pricing-card">
+            <h2>Basic</h2>
+            <p class="price">$9.99/month</p>
+            <ul>
+                <li>Access to basic features</li>
+                <li>Standard video quality</li>
+                <li>Watch on any device</li>
+            </ul>
+            <button class="select-plan-btn">Select Plan</button>
+        </div>
+        <div class="pricing-card">
+            <h2>Standard</h2>
+            <p class="price">$14.99/month</p>
+            <ul>
+                <li>Access to all features</li>
+                <li>High video quality</li>
+                <li>Watch on any device</li>
+                <li>Offline downloads</li>
+            </ul>
+            <button class="select-plan-btn">Select Plan</button>
+        </div>
+        <div class="pricing-card">
+            <h2>Premium</h2>
+            <p class="price">$19.99/month</p>
+            <ul>
+                <li>Access to all features</li>
+                <li>Ultra HD video quality</li>
+                <li>Watch on any device</li>
+                <li>Offline downloads</li>
+                <li>Priority support</li>
+            </ul>
+            <button class="select-plan-btn">Select Plan</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

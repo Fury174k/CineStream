@@ -62,3 +62,35 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('ajaxStop', hideLoading);
     document.addEventListener('ajaxError', hideLoading);
 });
+
+function showAlert(type, message) {
+    const alertContainer = document.getElementById('alert-container');
+    const alert = document.createElement('div');
+    alert.className = `alert alert-${type}`;
+    alert.innerHTML = `
+        <span>${message}</span>
+        <button class="close-alert">&times;</button>
+    `;
+    alertContainer.appendChild(alert);
+
+    // Slide in the alert
+    setTimeout(() => {
+        alert.classList.add('show');
+    }, 100);
+
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+        alert.classList.remove('show');
+        setTimeout(() => {
+            alert.remove();
+        }, 300);
+    }, 5000);
+
+    // Close alert on button click
+    alert.querySelector('.close-alert').addEventListener('click', () => {
+        alert.classList.remove('show');
+        setTimeout(() => {
+            alert.remove();
+        }, 300);
+    });
+}
