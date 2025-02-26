@@ -513,7 +513,7 @@ a {
   position: absolute;
   bottom: 10px;
   left: 50%;
-  transform: translate(-50%, 170%);
+  transform: translate(-50%, 150%);
 }
 
 .watchlist-card:hover h3 {

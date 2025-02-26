@@ -18,4 +18,5 @@ urlpatterns = [
     path('pricing/', views.pricingPage, name='pricing'),
     path('credits/', views.creditPage, name='credit'),
     path('clear_recently_viewed/', views.clear_recently_viewed, name='clear_recently_viewed'),
+    path('genre/anime/', views.genrePage, {'keyword': 'anime'}, name='anime'),
 ]

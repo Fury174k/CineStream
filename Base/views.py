@@ -293,12 +293,14 @@ def registerUser(request):
     else:
         return render(request, 'register.html')
 
-def get_movies_by_genre(genre_id):
+def get_movies_by_genre(genre_id, keyword=None):
     api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
-    base_url = 'https://api.themoviedb.org/3/genre/{}/movies?api_key={}'
+    base_url = 'https://api.themoviedb.org/3/discover/movie?api_key={}&with_genres={}'.format(api_key, genre_id)
+    if keyword:
+        base_url += '&with_keywords={}'.format(keyword)
     placeholder_image = '/static/Images/placeholders/image_placeholder.png'
 
-    response = requests.get(base_url.format(genre_id, api_key))
+    response = requests.get(base_url)
     data = response.json()
     return [
         {
@@ -311,17 +313,39 @@ def get_movies_by_genre(genre_id):
         for movie in data['results'][:20]
     ]
 
-def genrePage(request, genre_id):
+def get_movies_by_keyword(keyword):
+    api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
+    base_url = 'https://api.themoviedb.org/3/search/movie?api_key={}&query={}'.format(api_key, keyword)
+    placeholder_image = '/static/Images/placeholders/image_placeholder.png'
+
+    response = requests.get(base_url)
+    data = response.json()
+    return [
+        {
+            'id': movie.get('id'),
+            'title': movie.get('title'),
+            'poster_url': f"https://image.tmdb.org/t/p/original{movie.get('poster_path')}" if movie.get('poster_path') else placeholder_image,
+            'year_released': movie.get('release_date', '')[:4],
+            'likes': movie.get('vote_count')
+        }
+        for movie in data['results'][:20]
+    ]
+
+def genrePage(request, genre_id=None, keyword=None):
     genre_names = {
         10749: 'Romance',
         28: 'Action',
         27: 'Horror',
         9648: 'Mystery',
-        16: 'Romance Anime'
+        'anime': 'Anime'
     }
     try:
-        movies = get_movies_by_genre(genre_id)
-        genre_name = genre_names.get(genre_id, 'Unknown Genre')
+        if keyword:
+            movies = get_movies_by_keyword(keyword)
+            genre_name = genre_names.get(keyword, 'Unknown Genre')
+        else:
+            movies = get_movies_by_genre(genre_id)
+            genre_name = genre_names.get(genre_id, 'Unknown Genre')
 
         context = {
             'genre_name': genre_name,
