@@ -7,7 +7,7 @@
 <div class="main__container">
   <div class="poster-section">
     <div id="backdrop-container">
-      <a href="{% url 'room' popular_movies.0.id %}">
+      <a id="backdrop-link" href="{% url 'room' popular_movies.0.id %}">
         <img src="{{ popular_movies.0.backdrop_url }}" alt="movie-backdrop" id="backdrop" class="fade" />
       </a>
       <i class="bx bxs-chevron-left" id="poster-control"></i>
@@ -282,6 +282,7 @@
     const backdrop = document.getElementById('backdrop');
     const poster = document.getElementById('poster');
     const posterLink = document.getElementById('poster-section-link');
+    const backdropLink = document.getElementById('backdrop-link');
     const wishlistIcon = document.getElementById('wishlist-icon');
     const movieDetails = document.getElementById('movie-details');
 
@@ -294,6 +295,7 @@
         backdrop.src = movie.backdrop_url;
         poster.src = movie.poster_url;
         posterLink.href = `/room/${movie.id}`;
+        backdropLink.href = `/room/${movie.id}`;
         wishlistIcon.href = `/add_to_watchlist/${movie.id}`;
         movieDetails.querySelector('h2').textContent = movie.title;
         movieDetails.querySelector('p:nth-of-type(2)').innerHTML = `<i class="bx bx-heart" id="upvotes"></i>${movie.likes}`;
