@@ -296,10 +296,20 @@ def registerUser(request):
 def get_movies_by_genre(genre_id):
     api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
     base_url = 'https://api.themoviedb.org/3/genre/{}/movies?api_key={}'
+    placeholder_image = '/static/Images/placeholders/image_placeholder.png'
 
     response = requests.get(base_url.format(genre_id, api_key))
     data = response.json()
-    return data['results'][:20]
+    return [
+        {
+            'id': movie.get('id'),
+            'title': movie.get('title'),
+            'poster_url': f"https://image.tmdb.org/t/p/original{movie.get('poster_path')}" if movie.get('poster_path') else placeholder_image,
+            'year_released': movie.get('release_date', '')[:4],
+            'likes': movie.get('vote_count')
+        }
+        for movie in data['results'][:20]
+    ]
 
 def genrePage(request, genre_id):
     genre_names = {
@@ -325,6 +335,7 @@ def genrePage(request, genre_id):
 def celebrity_profile(request, id):
     api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
     base_url = f'https://api.themoviedb.org/3/person/{id}?api_key={api_key}'
+    placeholder_image = '/static/Images/placeholders/image_placeholder.png'
 
     try:
         # Fetch celebrity data
@@ -334,7 +345,7 @@ def celebrity_profile(request, id):
         celebrity = {
             'id': data.get('id'),
             'name': data.get('name'),
-            'profile_picture_url': f"https://image.tmdb.org/t/p/original{data.get('profile_path')}" if data.get('profile_path') else None,
+            'profile_picture_url': f"https://image.tmdb.org/t/p/original{data.get('profile_path')}" if data.get('profile_path') else placeholder_image,
             'biography': data.get('biography', 'Biography not available.'),
             'birth_date': data.get('birthday'),
             'popularity': data.get('popularity')
@@ -352,6 +363,7 @@ def celebrity_profile(request, id):
 def get_top_movies():
     api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
     base_url = 'https://api.themoviedb.org/3/movie/popular?api_key={}'
+    placeholder_image = '/static/Images/placeholders/image_placeholder.png'
     response = requests.get(base_url.format(api_key))
     data = response.json().get('results', [])[:10]
 
@@ -359,7 +371,7 @@ def get_top_movies():
         {
             'id': movie.get('id'),
             'title': movie.get('title'),
-            'poster_url': f"https://image.tmdb.org/t/p/original{movie.get('poster_path')}" if movie.get('poster_path') else None,
+            'poster_url': f"https://image.tmdb.org/t/p/original{movie.get('poster_path')}" if movie.get('poster_path') else placeholder_image,
             'release_date': movie.get('release_date'),
             'likes': movie.get('vote_count')
         }
@@ -372,6 +384,7 @@ def get_popular_genres():
     api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
     pexels_api_key = '49S8sYPnL8EJ6Q3vS66MkRg41Ls8cvUCJrJLv2rG5MWdC64JoodbgJRS'
     genre_url = f'https://api.themoviedb.org/3/genre/movie/list?api_key={api_key}'
+    placeholder_image = '/static/Images/placeholders/image_placeholder.png'
     response = requests.get(genre_url)
     data = response.json().get('genres', [])[:10]
 
@@ -380,7 +393,7 @@ def get_popular_genres():
         pexels_url = f'https://api.pexels.com/v1/search?query={genre["name"]}&per_page=1'
         pexels_response = requests.get(pexels_url, headers={'Authorization': pexels_api_key})
         pexels_data = pexels_response.json()
-        image_url = pexels_data['photos'][0]['src']['medium'] if pexels_data['photos'] else '/static/images/default_genre.jpg'
+        image_url = pexels_data['photos'][0]['src']['medium'] if pexels_data['photos'] else placeholder_image
         
         top_genre.append({
             'id': genre.get('id'),
@@ -401,6 +414,7 @@ def format_revenue(revenue):
 def get_top_box_office_movies():
     api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
     popular_url = f'https://api.themoviedb.org/3/movie/popular?api_key={api_key}'
+    placeholder_image = '/static/Images/placeholders/image_placeholder.png'
     response = requests.get(popular_url)
     data = response.json().get('results', [])[:10]
 
@@ -418,7 +432,7 @@ def get_top_box_office_movies():
             'id': movie_id,
             'title': movie.get('title'),
             'revenue': formatted_revenue,
-            'poster_url': f"https://image.tmdb.org/t/p/w92{movie.get('poster_path')}" if movie.get('poster_path') else None
+            'poster_url': f"https://image.tmdb.org/t/p/w92{movie.get('poster_path')}" if movie.get('poster_path') else placeholder_image
         })
     
     return top_box_office
@@ -426,6 +440,7 @@ def get_top_box_office_movies():
 def get_upcoming_movies():
     api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
     upcoming_url = f'https://api.themoviedb.org/3/movie/upcoming?api_key={api_key}'
+    placeholder_image = '/static/Images/placeholders/image_placeholder.png'
     response = requests.get(upcoming_url)
     data = response.json().get('results', [])[:10]
 
@@ -434,7 +449,7 @@ def get_upcoming_movies():
             'id': movie.get('id'),
             'title': movie.get('title'),
             'release_date': movie.get('release_date'),
-            'backdrop_url': f"https://image.tmdb.org/t/p/original{movie.get('backdrop_path')}" if movie.get('backdrop_path') else None,
+            'backdrop_url': f"https://image.tmdb.org/t/p/original{movie.get('backdrop_path')}" if movie.get('backdrop_path') else placeholder_image,
             'likes': movie.get('vote_count')
         }
         for movie in data
@@ -444,6 +459,7 @@ def get_upcoming_movies():
 def get_top_news():
     api_key = '2bf99f487550492a8c130951600c971c'
     news_url = f'https://newsapi.org/v2/top-headlines?category=entertainment&apiKey={api_key}'
+    placeholder_image = '/static/Images/placeholders/image_placeholder.png'
     response = requests.get(news_url)
     data = response.json().get('articles', [])[:6]
 
@@ -452,7 +468,7 @@ def get_top_news():
             'title': article.get('title'),
             'url': article.get('url'),
             'summary': article.get('description'),
-            'image_url': article.get('urlToImage') if article.get('urlToImage') else 'static/Images/placeholders/image_placeholder.png'
+            'image_url': article.get('urlToImage') if article.get('urlToImage') else placeholder_image
         }
         for article in data
     ]
@@ -529,7 +545,7 @@ def clear_recently_viewed(request):
     return redirect('home')
 
 def track_recently_viewed(request, page_title, page_url, page_summary):
-    def truncate_summary(summary, max_words=50):
+    def truncate_summary(summary, max_words=20):
         words = summary.split()
         if len(words) > max_words:
             return ' '.join(words[:max_words]) + '...'

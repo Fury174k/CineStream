@@ -1286,40 +1286,19 @@ a {
   text-align: center;
 }
 
-.logout-section a, .login-section a {
-  color: var(--website-theme-color);
+
+.login-section a, .logout-section a{
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: var(--website-theme-color);
+  color: #000;
   font-size: 1.2rem;
   text-decoration: none;
-  transition: color 0.3s;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .logout-section a:hover, .login-section a:hover {
-  color: #ffffff;
-}
-
-.logout-section a{
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: var(--website-theme-color);
-  color: #000;
-  font-size: 1.2rem;
-  text-decoration: none;
-  border-radius: 5px;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.login-section a {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: var(--website-theme-color);
-  color: #000;
-  font-size: 1.2rem;
-  text-decoration: none;
-  border-radius: 5px;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.login-section a:hover {
   background-color: #fff;
   color: var(--website-theme-color);
 }
