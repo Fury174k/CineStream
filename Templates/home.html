@@ -16,7 +16,7 @@
     <a id="poster-section-link" href='{% url "room" popular_movies.0.id %}'>
       <div id="poster-details">
         <img src="{{ popular_movies.0.poster_url }}" alt="movie-poster" id="poster" class="fade" />
-        <a href='{% url "add_to_watchlist" popular_movies.0.id %}'><i id="wishlist-icon" class="bx bx-bookmark-plus"></i></a>
+        <a id="wishlist-link" href='{% url "add_to_watchlist" popular_movies.0.id %}'><i id="wishlist-icon" class="bx bx-bookmark-plus"></i></a>
         <div id="poster-movie-details">
           <i class="bx bx-play-circle" id="play-icon"></i>
           <div id="movie-details">
@@ -283,7 +283,7 @@
     const poster = document.getElementById('poster');
     const posterLink = document.getElementById('poster-section-link');
     const backdropLink = document.getElementById('backdrop-link');
-    const wishlistIcon = document.getElementById('wishlist-icon');
+    const wishlistLink = document.getElementById('wishlist-link');
     const movieDetails = document.getElementById('movie-details');
 
     function updateMovie(index) {
@@ -296,7 +296,7 @@
         poster.src = movie.poster_url;
         posterLink.href = `/room/${movie.id}`;
         backdropLink.href = `/room/${movie.id}`;
-        wishlistIcon.href = `/add_to_watchlist/${movie.id}`;
+        wishlistLink.href = `/add_to_watchlist/${movie.id}`;
         movieDetails.querySelector('h2').textContent = movie.title;
         movieDetails.querySelector('p:nth-of-type(2)').innerHTML = `<i class="bx bx-heart" id="upvotes"></i>${movie.likes}`;
 

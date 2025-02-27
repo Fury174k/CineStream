@@ -82,18 +82,21 @@
     border-radius: 10px; /* Added border-radius */
 }
 
-#wishlist-icon{
-    position: absolute;
-    left: 20px;
-    top: 6px;
-    font-size: 2rem;
-    color: rgba(255, 255, 255, 0.5);
-    cursor: pointer;
-    transition: color 0.4s ease;
+#wishlist-link {
+  position: absolute;
+  top: 10px;
+  left: 16%;
+  font-size: 24px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  padding: 5px;
+  transition: background-color 0.3s;
 }
 
-#wishlist-icon:hover{
-    color: white;
+
+#wishlist-link:hover {
+  background-color: var(--website-theme-color);
 }
 
 #poster-movie-details{
@@ -513,6 +516,7 @@ a {
   position: absolute;
   bottom: 10px;
   left: 50%;
+  opacity: 0;
   transform: translate(-50%, 150%);
 }
 

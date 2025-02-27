@@ -11,7 +11,10 @@
 <div class="room__container">
     <div class="movie__section">
         <div class="movie__details-container">
-            <img id="poster" src="{{ movie.poster_url }}" alt="{{ movie.title }} Poster" />
+            <div class="poster-wrapper">
+                <img id="poster" src="{{ movie.poster_url }}" alt="{{ movie.title }} Poster" />
+                <a id="wishlist-link" href='{% url "add_to_watchlist" movie.id %}'><i id="wishlist-icon" class="bx bx-bookmark-plus"></i></a>
+            </div>
             <div id="movie__section-details">
                 <h1>{{ movie.title }}</h1>
                 <p>Genres: {{ movie.genres|join:", " }}</p>

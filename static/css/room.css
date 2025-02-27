@@ -38,11 +38,8 @@
     gap: 6px;
   }
 
-  #movie__section-details{
-    padding-left: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  .poster-wrapper {
+    position: relative;
   }
 
   #poster{
@@ -51,6 +48,29 @@
     object-fit: cover;
     border-radius: 10px;
     margin-right: 20px;
+  }
+
+  #wishlist-link {
+    position: absolute;
+    top: 10px;
+    right: 30px;
+    font-size: 24px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    padding: 5px;
+    transition: background-color 0.3s;
+  }
+
+  #wishlist-link:hover {
+    background-color: var(--website-theme-color);
+  }
+
+  #movie__section-details{
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 
   #movie__section-details h1{
