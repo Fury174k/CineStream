@@ -93,6 +93,20 @@
     color: white;
   }
 
+  .trailer-container {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .trailer-container iframe {
+    width: 100%;
+    max-width: 560px;
+    height: 315px;
+    border: none;
+    border-radius: 10px;
+  }
 
   .percentage-circle {
     width: 80px;

@@ -1,0 +1,10 @@
+
+{% load static %}
+
+<link rel='stylesheet' href='{% static "css/error.css" %}'>
+<div class="error-page">
+    <h1>Something went wrong</h1>
+    <p>We're sorry, but something went wrong. Please try again later.</p>
+    <a href="{% url 'home' %}" class="btn">Go to Homepage</a>
+</div>
+

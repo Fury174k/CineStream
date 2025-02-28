@@ -7,14 +7,42 @@
 </head>
 <body>
     <div class="celebrity-profile">
-        <img src="{{ celebrity.profile_picture_url }}" alt="{{ celebrity.name }}" class="celebrity-profile__pic">
-        <h1>{{ celebrity.name }}</h1>
-        <p><strong>Birth Date:</strong> {{ celebrity.birth_date }}</p>
-        <p>
-            <strong>Popularity:</strong> {{ celebrity.popularity }}
-      
-        </p>
-        <p>{{ celebrity.biography }}</p>
+        <div class="celebrity-picture-container">
+            <img src="{{ celebrity.profile_picture_url }}" alt="{{ celebrity.name }}" class="celebrity-profile__pic">
+            <div class="celeb-socials">
+                <a href="https://www.facebook.com/{{ celebrity.facebook_id }}" target="_blank"><i class="bx bxl-facebook"></i></a>
+                <a href="https://twitter.com/{{ celebrity.twitter_id }}" target="_blank"><i class="bx bxl-twitter"></i></a>
+                <a href="https://www.instagram.com/{{ celebrity.instagram_id }}" target="_blank"><i class="bx bxl-instagram"></i></a>
+            </div> 
+            <div class="personal-info">
+                <h3>Personal Info</h3>
+                <p>Known for: {{ celebrity.occupation }}</p>
+                <p>Rating: {{ celebrity.popularity }}</p>
+                <p>Gender: {{ celebrity.gender }}</p>
+                <p>Birthday: {{ celebrity.birth_date }}</p>
+                <p>Also known As: {{ celebrity.other_names }}</p>
+            </div>
+        </div>
+        <div class="celebrity-details">
+            <h1>{{ celebrity.name }}</h1>
+            <p><strong>Birth Date:</strong> {{ celebrity.birth_date }}</p>
+            <p>
+                <strong>Popularity:</strong> {{ celebrity.popularity }}
+            </p>
+            <h3>Biography</h3>
+            <p>{{ celebrity.biography }}</p>
+            <div class="known-for">
+                <h3>Known For:</h3>
+                <div class="known-for__movies">
+                    {% for movie in celebrity.known_for_movies %}
+                        <a href="{% url 'room' movie.id %}">
+                            <img src="{{ movie.poster_url }}" alt="{{ movie.title }} Poster" class="known-for__movie">
+                            <p class="movie-title">{{ movie.title }}</p>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

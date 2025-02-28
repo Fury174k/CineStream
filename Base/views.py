@@ -7,6 +7,7 @@ import requests
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+import math
 from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here
@@ -66,7 +67,7 @@ def homepage(request):
                 'profile_picture_url': f"https://image.tmdb.org/t/p/original{celeb.get('profile_path')}" if celeb.get('profile_path') else placeholder_image,
                 'biography': celeb.get('biography', 'Biography not available.'),
                 'birth_date': celeb.get('birthday'),
-                'popularity': celeb.get('popularity')
+                'popularity': math.ceil(celeb.get('popularity'))
             }
             for celeb in celebrity_data
         ]
@@ -111,7 +112,10 @@ def homepage(request):
         return render(request, 'home.html', context)
     except requests.RequestException as e:
         messages.error(request, "Failed to fetch data from the external API.")
-        return render(request, 'home.html', {'error': str(e)})
+        return render(request, 'error.html', {'error': str(e)})
+    except Exception as e:
+        messages.error(request, "An unexpected error occurred.")
+        return render(request, 'error.html', {'error': str(e)})
 
 @login_required
 def add_to_watchlist(request, movie_id):
@@ -123,12 +127,12 @@ def remove_from_watchlist(request, movie_id):
     Watchlist.objects.filter(user=request.user, movie_id=movie_id).delete()
     return redirect('home')
 
-
-
 def roomPage(request, id):
     api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
     base_url = 'https://api.themoviedb.org/3/movie/{}?api_key={}'
     similar_movies_url = f'https://api.themoviedb.org/3/movie/{id}/similar?api_key={api_key}'
+    youtube_api_key = 'AIzaSyCuXYSHGzNIFWWWxcoWEZh2aVUubKzZPGA'
+    youtube_search_url = 'https://www.googleapis.com/youtube/v3/search?'
     placeholder_image = '/static/Images/placeholders/image_placeholder.png'
 
     try:
@@ -190,6 +194,18 @@ def roomPage(request, id):
             for member in credits_data.get('cast', [])
         ]
 
+        # Fetch trailer ID from YouTube API
+        youtube_params = {
+            'part': 'snippet',
+            'q': f"{movie['title']} trailer",
+            'key': youtube_api_key,
+            'maxResults': 1,
+            'type': 'video'
+        }
+        youtube_response = requests.get(youtube_search_url, params=youtube_params)
+        youtube_data = youtube_response.json()
+        trailer_id = youtube_data['items'][0]['id']['videoId'] if youtube_data['items'] else None
+
         comments = Comment.objects.filter(room=room).order_by('date_created')
 
         track_recently_viewed(request, movie['title'], request.path, movie['overview'])
@@ -200,14 +216,17 @@ def roomPage(request, id):
             'cast_details': cast_details,
             'comments': comments,
             'room': room,
+            'trailer_id': trailer_id,
             'recently_viewed_pages': request.session.get('recently_viewed', []),
         }
 
         return render(request, 'room.html', context)
     except requests.RequestException as e:
         messages.error(request, "Failed to fetch data from the external API.")
-        return render(request, 'room.html', {'error': str(e)})
-    
+        return render(request, 'error.html', {'error': str(e)})
+    except Exception as e:
+        messages.error(request, "An unexpected error occurred.")
+        return render(request, 'error.html', {'error': str(e)})
 
 @csrf_exempt
 @login_required
@@ -226,8 +245,6 @@ def save_comment(request):
             return redirect('home')
         
         return redirect('room', id=room.tmdb_id)
-
-    
 
 def loginPage(request):
     if request.method == 'POST':
@@ -372,8 +389,24 @@ def celebrity_profile(request, id):
             'profile_picture_url': f"https://image.tmdb.org/t/p/original{data.get('profile_path')}" if data.get('profile_path') else placeholder_image,
             'biography': data.get('biography', 'Biography not available.'),
             'birth_date': data.get('birthday'),
-            'popularity': data.get('popularity')
+            'popularity': math.ceil(data.get('popularity')),
+            'occupation': data.get('known_for_department'),
+            'gender': 'Male' if data.get('gender') == 2 else 'Female',
+            'other_names': ', '.join(data.get('also_known_as', [])),
+            'known_for_movies': []
         }
+
+        # Fetch known for movies
+        known_for_url = f'https://api.themoviedb.org/3/person/{id}/movie_credits?api_key={api_key}'
+        known_for_response = requests.get(known_for_url)
+        known_for_data = known_for_response.json().get('cast', [])[:8]
+
+        for movie in known_for_data:
+            celebrity['known_for_movies'].append({
+                'id': movie.get('id'),
+                'title': movie.get('title'),
+                'poster_url': f"https://image.tmdb.org/t/p/original{movie.get('poster_path')}" if movie.get('poster_path') else placeholder_image,
+            })
 
         context = {
             'celebrity': celebrity
@@ -592,7 +625,6 @@ def track_recently_viewed(request, page_title, page_url, page_summary):
 
     request.session['recently_viewed'] = recently_viewed
 
-
 @login_required
 def watchlistPage(request):
     api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
@@ -619,12 +651,16 @@ def watchlistPage(request):
 
     return render(request, 'watchlist.html', context)
 
-
 def pricingPage(request):
     return render(request, 'pricing.html')
 
+def custom_404_view(request, exception):
+    return render(request, 'error.html', {'error': 'Page not found'}, status=404)
 
 def creditPage(request):
     return render(request, 'credits.html')
+
+def custom_500_view(request):
+    return render(request, 'error.html', {'error': 'Server error'}, status=500)
 
 
