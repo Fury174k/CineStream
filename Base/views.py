@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 import math
 from django.views.decorators.csrf import csrf_exempt
+import json
 
 # Create your views here
 def homepage(request):
@@ -187,6 +188,7 @@ def roomPage(request, id):
         # Extract cast details
         cast_details = [
             {
+                'id': member['id'],
                 'name': member['name'],
                 'character': member['character'],
                 'profile_path': f"https://image.tmdb.org/t/p/original{member['profile_path']}" if member['profile_path'] else placeholder_image
@@ -662,5 +664,3 @@ def creditPage(request):
 
 def custom_500_view(request):
     return render(request, 'error.html', {'error': 'Server error'}, status=500)
-
-

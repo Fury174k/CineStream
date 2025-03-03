@@ -34,11 +34,13 @@
             <h2>Cast</h2>
             <div class="cast__section">
                 {% for cast in cast_details %}
+                <a id="celeb-link" href={% url "celebrity_profile" cast.id %}>
                 <div class="cast__details">
                     <img src="{{ cast.profile_path }}" alt="{{ cast.name }} Profile" />
                     <h3>{{ cast.name }}</h3>
                     <p>{{ cast.character }}</p>
-                </div>
+                </div>                        
+            </a>
                 {% endfor %}
             </div>
         </div>
