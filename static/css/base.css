@@ -21,7 +21,7 @@ nav {
   background-color: var(--nav-bg-color);
   width: 100vw;
   display: grid;
-  grid-template-columns: auto auto 1fr auto  auto auto;
+  grid-template-columns: auto auto 1fr auto auto auto;
   gap: 16px;
   align-items: center;
   padding: 10px;
@@ -29,7 +29,7 @@ nav {
 }
 
 nav #logo {
-  font-size: 1.5vw;
+  font-size: 1.8vw; /* Increased font size */
   font-weight: 900;
   color: var(--header-text-color);
   padding: 0px 10px 0px 0px;
@@ -39,36 +39,36 @@ nav #logo {
 nav #nav-button {
   border: none;
   border-radius: 10px;
-  font-size: 1.1vw;
+  font-size: 1.4vw; /* Increased font size */
   background-color: transparent;
   color: var(--header-text-color);
   padding: 0px 5px 5px 5px;
   cursor: pointer;
 }
 
-nav #nav-button:hover{
-  background-color: #222
-  }
+nav #nav-button:hover {
+  background-color: #222;
+}
 
 nav #nav-button i {
   padding: 0px 5px 0px 5px;
   transform: translateY(4px);
-  font-size: 1.5vw;
+  font-size: 1.8vw; /* Increased font size */
 }
 
 nav input[type="text"] {
-  width: 100%; 
+  width: 100%;
   padding: 8px 16px 8px 16px;
   border: 0.8px solid var(--border-color);
   border-radius: 5px;
 }
 
-.search-container{
+.search-container {
   position: relative;
   max-width: 700px;
 }
 
-.search-container button{
+.search-container button {
   border: none;
   background-color: transparent;
 }
@@ -78,7 +78,7 @@ nav input[type="text"] {
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 1.3vw;
+  font-size: 1.6vw; /* Increased font size */
   font-weight: 500;
   cursor: pointer;
   z-index: 5;
@@ -87,37 +87,36 @@ nav input[type="text"] {
 }
 
 nav a, nav #search-icon {
-  font-size: 1.2vw;
+  font-size: 1.5vw; /* Increased font size */
   cursor: pointer;
   color: var(--header-text-color);
   text-decoration: none;
 }
 
-nav #pricing{
+nav #pricing {
   font-weight: 300;
   border-radius: 5px;
   padding: 6px;
 }
 
 nav #sign-up {
-  font-size: 1.1vw;
+  font-size: 1.5vw; /* Increased font size */
   padding: 6px;
   color: var(--header-text-color);
   border-radius: 5px;
   text-decoration: none;
 }
 
-nav a:not(#logo):hover{
+nav a:not(#logo):hover {
   background-color: #222222;
 }
 
-nav #wishlist{
+nav #wishlist {
   padding: 6px;
   border-radius: 5px;
 }
 
-
-body{
+body {
   background-color: var(--main-bg-color);
 }
 
@@ -312,5 +311,46 @@ text-decoration: underline var(--website-theme-color);
   position: absolute;
   top: 10px;
   right: 10px;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  nav {
+    display: flex;
+    justify-content: space-between;
+    padding-inline: 5vw;
+  }
+
+  .search-container, #wishlist, #nav-button {
+    display: none;
+  }
+
+  #nav-buttonm {
+    display: block; /* Ensure it is displayed */
+    border: white;
+    background: transparent;
+    font-size: 2.4vw; /* Increased font size */
+    padding: 10px;
+    color: var(--header-text-color);
+    background-color: transparent; /* Removed background color */
+  }
+
+  nav #pricing {
+    background-color: var(--website-theme-color);
+    color: #000;
+    padding: 10px 20px;
+    border-radius: 15px;
+    text-decoration: none;
+  }
+
+  nav #pricing:hover {
+    background-color: #fff;
+    color: var(--website-theme-color);
+  }
+
+  /* Updating font sizes */
+  nav #logo, #pricing, nav #auth-link{
+    font-size: 3vw; /* Increased font size */
+  }
 }
 
