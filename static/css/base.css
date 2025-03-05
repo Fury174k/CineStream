@@ -28,6 +28,10 @@ nav {
   padding-inline: 10vw;
 }
 
+#nav-buttonm {
+  display: none;
+}
+
 nav #logo {
   font-size: 1.8vw; /* Increased font size */
   font-weight: 900;
@@ -35,6 +39,7 @@ nav #logo {
   padding: 0px 10px 0px 0px;
   text-decoration: none;
 }
+
 
 nav #nav-button {
   border: none;
