@@ -8,6 +8,7 @@
             <button type="submit" id="search-icon"><i class="bx bx-search"></i></button>
         </form>
     </div>
+    <button id="search-iconm" style="font-size: 1.9rem;" type="button"><i class="bx bx-search"></i></button>
     <a href='{% url "pricing" %}' id="pricing">CinePro</a>
     <a href="{% url 'watchlist' %}" id="wishlist">Wishlist</a>
     {% if request.user.is_authenticated %}
@@ -16,3 +17,5 @@
         <a href="{% url 'login' %}" id="auth-link">SignIn</a>
     {% endif %}
 </nav>
+
+

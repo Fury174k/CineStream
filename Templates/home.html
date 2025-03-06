@@ -87,7 +87,7 @@
     <a href="{% url 'anime' %}">
       <div id="features">
         <img src="{% static 'Images/Genre_pics/RA.jpg' %}" alt="Genre_pic" id="feature">
-        <h3 id="description">Find Top 20 Romance Anime</h3>
+        <h3 id="description">Find Top 20 Animation Shows</h3>
       </div>
     </a>
   </div>
@@ -246,7 +246,7 @@
   <h2>Recently Viewed Pages</h2>
   <form method="post" action="{% url 'clear_recently_viewed' %}">
     {% csrf_token %}
-    <button type="submit" class="clear-recently-viewed-btn">Clear Recently Viewed</button>
+    <button type="submit" class="clear-recently-viewed-btn">Clear</button>
   </form>
   <div id="recently-viewed-pages-container">
     <!-- Recently viewed pages list items will be dynamically generated here -->
