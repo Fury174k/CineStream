@@ -613,7 +613,7 @@ def clear_recently_viewed(request):
     return redirect('home')
 
 def track_recently_viewed(request, page_title, page_url, page_summary):
-    def truncate_summary(summary, max_words=20):
+    def truncate_summary(summary, max_words=15):
         words = summary.split()
         if len(words) > max_words:
             return ' '.join(words[:max_words]) + '...'

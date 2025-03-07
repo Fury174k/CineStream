@@ -1229,7 +1229,7 @@ a {
   margin: 10px;
   text-align: center;
   width: 280px; /* Slightly reduced width */
-  height: 100px;
+  height: 120px;
   padding: 10px;
   transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
 }
