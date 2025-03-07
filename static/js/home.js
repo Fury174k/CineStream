@@ -208,4 +208,15 @@ document.addEventListener('DOMContentLoaded', () => {
         stopSlideshow();
     });
 
+    function slideShow() {
+        console.log('Slideshow triggered');
+        const posterControls = document.getElementById('poster-controls');
+        if (posterControls) {
+            posterControls.click();
+        } else {
+            console.error('Poster controls element not found');
+        }
+    }
+
+    let slideshowInterval = setInterval(slideShow, 5000);
 });

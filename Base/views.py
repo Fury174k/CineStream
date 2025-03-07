@@ -248,6 +248,14 @@ def save_comment(request):
         
         return redirect('room', id=room.tmdb_id)
 
+@login_required
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id, user=request.user)
+    room_id = comment.room.tmdb_id
+    comment.delete()
+    messages.success(request, 'Comment deleted successfully.')
+    return redirect('room', id=room_id)
+
 def loginPage(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -449,7 +457,7 @@ def get_popular_genres():
 
     top_genre = []
     for genre in data:
-        pexels_url = f'https://api.pexels.com/v1/search?query={genre["name"]}&per_page=1'
+        pexels_url = f'https://api.pexels.com/v1/search?query={genre["name"]}&per_page=1&order_by=popular'
         pexels_response = requests.get(pexels_url, headers={'Authorization': pexels_api_key})
         pexels_data = pexels_response.json()
         image_url = pexels_data['photos'][0]['src']['medium'] if pexels_data['photos'] else placeholder_image
@@ -664,3 +672,31 @@ def creditPage(request):
 
 def custom_500_view(request):
     return render(request, 'error.html', {'error': 'Server error'}, status=500)
+
+def celebrities_list(request):
+    api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
+    celebrity_url = f'https://api.themoviedb.org/3/person/popular?api_key={api_key}'
+    placeholder_image = '/static/Images/placeholders/image_placeholder.png'
+
+    try:
+        response = requests.get(celebrity_url)
+        celebrity_data = response.json().get('results', [])[:30]
+
+        celebrities = [
+            {
+                'id': celeb.get('id'),
+                'name': celeb.get('name'),
+                'profile_picture_url': f"https://image.tmdb.org/t/p/original{celeb.get('profile_path')}" if celeb.get('profile_path') else placeholder_image,
+                'popularity': math.ceil(celeb.get('popularity'))
+            }
+            for celeb in celebrity_data
+        ]
+
+        context = {
+            'celebrities': celebrities
+        }
+
+        return render(request, 'celebrities-list.html', context)
+    except requests.RequestException as e:
+        messages.error(request, "Failed to fetch data from the external API.")
+        return render(request, 'error.html', {'error': str(e)})

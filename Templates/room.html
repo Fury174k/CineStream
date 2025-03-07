@@ -53,6 +53,12 @@
                         <h3>@{{ comment.user.username }}</h3>
                         <h4 id="comment-text">{{ comment.comment_text }}</h4>
                         <p>{{ comment.date_created }}</p>
+                        {% if comment.user == request.user %}
+                        <form method="post" action="{% url 'delete_comment' comment.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="delete-comment-btn">Delete</button>
+                        </form>
+                        {% endif %}
                     </div>
                     {% endfor %}
                 {% else %}
@@ -78,8 +84,7 @@
             {% for similar_movie in similar_movies %}
             <a href="{% url 'room' similar_movie.id %}">
                 <img src="{{ similar_movie.poster_url }}" alt="{{ similar_movie.title }} Poster" />
-                <div class="circle-container">
-                    <h3>{{ similar_movie.title }}</h3>
+                <h3>{{ similar_movie.title }}</h3>
             </a>
             {% endfor %}
         </div>

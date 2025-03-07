@@ -15,8 +15,10 @@ urlpatterns = [
     path('search/', views.searchMovie, name='search'),
     path('top_movies/', views.getTop50movies, name='top-50-movies'),
     path('save_comment/', views.save_comment, name='save_comment'),
+    path('delete_comment/<int:comment_id>/', views.delete_comment, name='delete_comment'),
     path('pricing/', views.pricingPage, name='pricing'),
     path('credits/', views.creditPage, name='credit'),
     path('clear_recently_viewed/', views.clear_recently_viewed, name='clear_recently_viewed'),
     path('genre/anime/', views.genrePage, {'keyword': 'anime'}, name='anime'),
+    path('celebrities/', views.celebrities_list, name='celebrities_list'),
 ]

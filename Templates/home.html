@@ -96,7 +96,7 @@
 <div class="celebrities-section">
   <i id="celebrity-list__prev" class="bx bx-chevron-left"></i>
   <i id="celebrity-list__next" class="bx bx-chevron-right"></i>
-  <h2> Top Celebrities <i class="bx bx-chevron-right"></i></h2>
+  <h2><a href="{% url 'celebrities_list' %}">Top Celebrities</a> <i class="bx bx-chevron-right"></i></h2>
   <div id="celebrities-container">
     <!-- Celebrity list items will be dynamically generated here -->
     {% for celebrity in celebrities %}

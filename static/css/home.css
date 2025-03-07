@@ -26,7 +26,7 @@
     left: 0%;
     top: 47%;
     border: #898989 solid 0.8px;
-    font-size: 3rem;
+    font-size: 3rem !important; /* Ensure this style is applied */
     color: #fff;
     z-index: 2;
     transition: 0.3s ease;
@@ -39,7 +39,7 @@
     right: 0%;
     top: 47%;
     border: #898989 solid 0.8px;
-    font-size: 3rem;
+    font-size: 2.5rem;
     color: #fff;
     z-index: 2;
     transition: 0.3s ease;
@@ -1311,6 +1311,7 @@ a {
   font-size: 1.2rem;
   text-decoration: none;
   border-radius: 5px;
+  z-index: 5;
   transition: background-color 0.3s, color 0.3s;
 }
 
@@ -1368,7 +1369,7 @@ a {
         max-height: 300px; /* Increase height when minimized */
     }
 
-    .movie-list-section, #poster, #poster-control, #poster-controls, #wishlist-link {
+    .movie-list-section, #poster,#wishlist-link {
         display: none;
     }
 
@@ -1390,6 +1391,12 @@ a {
 
     #play-icon {
         font-size: 3.8rem; /* Reduced font size */
+    }
+
+    #poster-control, #poster-controls{
+      top: 40% !important;
+      font-size: 1.5rem !important;
+      margin: 5px !important;
     }
 
     #upvotes {
@@ -1475,7 +1482,8 @@ a {
 
     .column {
         width: 100%; /* Full width on mobile */
-        margin-bottom: 20px; /* Increased vertical spacing */
+        gap: 10px;
+        margin-bottom: 10px; /* Increased vertical spacing */
     }
 
     #top-box-office-container {
