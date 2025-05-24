@@ -17,70 +17,12 @@
 }
 
 
-nav {
-  background-color: var(--nav-bg-color);
-  width: 100vw;
-  display: grid;
-  grid-template-columns: auto auto 1fr auto auto auto;
-  gap: 16px;
-  align-items: center;
-  padding: 10px;
-  padding-inline: 10vw;
-  position: relative; /* Ensure the search container can be positioned absolutely */
-}
 
-#nav-buttonm {
-  display: none;
-}
+/* .search-container {
+  transition: all 0.5s ease-in-out; /* Add transition for smooth effect 
+} */
 
-#search-iconm{
-  display: none;
-}
-
-nav #logo {
-  font-size: 1.8vw; /* Increased font size */
-  font-weight: 900;
-  color: var(--header-text-color);
-  padding: 0px 10px 0px 0px;
-  text-decoration: none;
-}
-
-
-nav #nav-button {
-  border: none;
-  border-radius: 10px;
-  font-size: 1.4vw; /* Increased font size */
-  background-color: transparent;
-  color: var(--header-text-color);
-  padding: 0px 5px 5px 5px;
-  cursor: pointer;
-}
-
-nav #nav-button:hover {
-  background-color: #222;
-}
-
-nav #nav-button i {
-  padding: 0px 5px 0px 5px;
-  transform: translateY(4px);
-  font-size: 1.8vw; /* Increased font size */
-}
-
-nav input[type="text"] {
-  width: 100%;
-  padding: 8px 16px 8px 16px;
-  border: 0.8px solid var(--border-color);
-  border-radius: 5px;
-}
-
-.search-container {
-  position: relative;
-  max-width: 700px;
-  transition: all 0.5s ease-in-out; /* Add transition for smooth effect */
-  z-index: 10; /* Ensure it is above other elements */
-}
-
-.search-container.active {
+/* .search-container.active {
   position: absolute;
   top: 0;
   left: 0;
@@ -91,68 +33,15 @@ nav input[type="text"] {
   justify-content: center;
   align-items: center;
   padding: 20px;
-}
+} */
 
-.search-container input[type="text"] {
+/* .search-container input[type="text"] {
   width: 100%;
   padding: 8px 16px;
   border: 0.8px solid var(--border-color);
   border-radius: 5px;
-  transition: all 0.5s ease-in-out; /* Add transition for smooth effect */
-}
-
-.search-container.active input[type="text"] {
-  width: 80%;
-  font-size: 1.5rem; /* Increase font size */
-}
-
-.search-container button {
-  border: none;
-  background-color: transparent;
-}
-
-.search-container #search-icon {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.6vw; /* Increased font size */
-  font-weight: 500;
-  cursor: pointer;
-  z-index: 5;
-  color: var(--menu-bg-color);
-  pointer-events: none;
-}
-
-nav a, nav #search-icon {
-  font-size: 1.5vw; /* Increased font size */
-  cursor: pointer;
-  color: var(--header-text-color);
-  text-decoration: none;
-}
-
-nav #pricing {
-  font-weight: 300;
-  border-radius: 5px;
-  padding: 6px;
-}
-
-nav #sign-up {
-  font-size: 1.5vw; /* Increased font size */
-  padding: 6px;
-  color: var(--header-text-color);
-  border-radius: 5px;
-  text-decoration: none;
-}
-
-nav a:not(#logo):hover {
-  background-color: #222222;
-}
-
-nav #wishlist {
-  padding: 6px;
-  border-radius: 5px;
-}
+  transition: all 0.5s ease-in-out; 
+} */
 
 body {
   background-color: var(--main-bg-color);
@@ -374,6 +263,7 @@ text-decoration: underline var(--website-theme-color);
   font-size: 1.1rem;
   color: var(--header-text-color);
   display: block;
+  background-color: rgba(255, 255, 255, 0.02);
   transition: color 0.3s, background-color 0.3s;
 }
 
@@ -394,7 +284,7 @@ text-decoration: underline var(--website-theme-color);
 }
 
 .mobile-sidebar .logout-btn {
-  margin-top: auto; /* Push the logout button to the bottom */
+  margin-top: auto 0 20px 0; /* Push the logout button to the bottom */
   padding: 10px 15px;
   text-decoration: none;
   font-size: 1.5rem;

@@ -19,8 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePercentageCircle();
 
     // Function to open the comment overlay
-    window.openCommentOverlay = function() {
-        document.getElementById('comment-overlay').style.display = 'flex';
+    window.openCommentOverlay = function(isAuthenticated) {
+        if (isAuthenticated) {
+            document.getElementById('comment-overlay').style.display = 'flex';
+        } else {
+            alert('You need to be logged in to add a comment.');
+        }
     };
 
     // Function to close the comment overlay
