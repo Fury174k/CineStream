@@ -21,4 +21,5 @@ urlpatterns = [
     path('clear_recently_viewed/', views.clear_recently_viewed, name='clear_recently_viewed'),
     path('genre/anime/', views.genrePage, {'keyword': 'anime'}, name='anime'),
     path('celebrities/', views.celebrities_list, name='celebrities_list'),
+    path('upcoming-movies/', views.get_upcoming_movies, name='upcoming_movies'),
 ]

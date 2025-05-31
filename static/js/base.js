@@ -57,11 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Optionally, show loading animation on AJAX requests
-    document.addEventListener('ajaxStart', showLoading);
-    document.addEventListener('ajaxStop', hideLoading);
-    document.addEventListener('ajaxError', hideLoading);
-
     // Sidebar toggle functionality
     const navButtonM = document.getElementById('nav-buttonm');
     const mobileSidebar = document.getElementById('mobile-sidebar');

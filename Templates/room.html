@@ -1,110 +1,249 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %}
+{% block content %}
 
 {% load static %}
 
 <link rel="stylesheet" href="{% static 'css/room.css' %}">
-<script type="text/javascript" src="{% static 'js/room.js' %}"></script>
 
-<title>{{ movie.title }}</title>
 
 {% if movie %}
-<div class="room__container">
-    <div class="movie__section">
-        <div class="movie__details-container">
-            <div class="poster-wrapper">
-                <img id="poster" src="{{ movie.poster_url }}" alt="{{ movie.title }} Poster" />
-                <a id="wishlist-link" href='{% url "add_to_watchlist" movie.id %}'><i id="wishlist-icon" class="bx bx-bookmark-plus"></i></a>
-            </div>
-            <div id="movie__section-details">
-                <h1>{{ movie.title }}</h1>
-                <p>Genres: {{ movie.genres|join:", " }}</p>
-                <div class="percentage-circle" id="percentage-circle">
-                    <span class="percentage-text" id="percentage-text">{{ movie.user_score_percentage }}</span>
+<title>{{ movie.title }}</title>
+
+<div class="min-h-screen text-white bg-gray-900">
+    <!-- Backdrop Hero Section -->
+    <div class="relative bg-cover bg-center min-h-96 md:min-h-[50vh]" style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{{ movie.backdrop_url }}')">
+       <div class="container flex flex-col items-start px-4 py-4 mx-auto md:flex-row">
+            <!-- Movie Poster -->
+            <div class="w-full mb-8 md:w-1/3 lg:w-1/4 md:mb-0 md:mr-8">
+                <img src="{{ movie.poster_url }}" alt="{{ movie.title }} Poster" class="w-full max-w-full transition duration-300 transform rounded-lg shadow-xl hover:scale-105">
+                <div class="flex mt-4 space-x-2">
+                    <a href='{% url "add_to_watchlist" movie.id %}' class="flex items-center justify-center flex-1 px-4 py-2 text-white transition bg-indigo-600 rounded-lg hover:bg-indigo-700">
+                        <i class="mr-2 bx bx-bookmark-plus"></i> Watchlist
+                    </a>
+                    <button onclick="playTrailer()" class="flex items-center justify-center flex-1 px-4 py-2 text-white transition bg-red-600 rounded-lg hover:bg-red-700">
+                        <i class="mr-2 bx bx-play"></i> Trailer
+                    </button>
                 </div>
-                <p id="score"> User Score </p>
-                <p>{{ movie.overview }}</p>
-                <p>Release Date: {{ movie.release_date }}</p>
-                <p>Likes: {{ movie.likes }}</p>
             </div>
-        </div>
-        <div class="trailer-container">
-            <iframe id="trailer" width="560" height="315" src="https://www.youtube.com/embed/{{ trailer_id }}" frameborder="0" allowfullscreen></iframe>
-        </div>
-        <div class="cast__details-container">
-            <h2>Cast</h2>
-            <div class="cast__section">
-                {% for cast in cast_details %}
-                <a id="celeb-link" href={% url "celebrity_profile" cast.id %}>
-                <div class="cast__details">
-                    <img src="{{ cast.profile_path }}" alt="{{ cast.name }} Profile" />
-                    <h3>{{ cast.name }}</h3>
-                    <p>{{ cast.character }}</p>
-                </div>                        
-            </a>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="review__section">
-            <h2>Reviews</h2>
-            <div class="comment__section">
-                {% if comments %}
-                    {% for comment in comments %}
-                    <div id="comment">
-                        <h3>@{{ comment.user.username }}</h3>
-                        <h4 id="comment-text">{{ comment.comment_text }}</h4>
-                        <p>{{ comment.date_created }}</p>
-                        {% if comment.user == request.user %}
-                        <form method="post" action="{% url 'delete_comment' comment.id %}">
-                            {% csrf_token %}
-                            <button type="submit" class="delete-comment-btn">Delete</button>
-                        </form>
-                        {% endif %}
+            
+            <!-- Movie Info -->
+            <div class="w-full md:w-2/3 lg:w-3/4">
+                <h1 class="mb-2 text-3xl font-bold md:text-4xl">{{ movie.title }} <span class="text-gray-400">({{ movie.release_date|slice:":4" }})</span></h1>
+                
+                <div class="flex flex-col items-start mb-6 md:flex-row md:items-center">
+                    <!-- User Score -->
+                    <div class="flex items-center mb-4 md:mb-0 md:mr-8">
+                        <div class="relative w-16 h-16 mr-3">
+                            <svg class="w-full h-full" viewBox="0 0 36 36">
+                                <path class="text-gray-700"
+                                    d="M18 2.0845
+                                    a 15.9155 15.9155 0 0 1 0 31.831
+                                    a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="3"/>
+                                <path class="text-green-500"
+                                    stroke-dasharray="{{ movie.user_score_percentage }}, 100"
+                                    d="M18 2.0845
+                                    a 15.9155 15.9155 0 0 1 0 31.831
+                                    a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="3"/>
+                            </svg>
+                            <span class="absolute inset-0 flex items-center justify-center text-sm font-bold text-white">{{ movie.user_score_percentage }}%</span>
+                        </div>
+                        <span class="text-sm text-gray-400">User Score</span>
                     </div>
+                    
+                    <!-- Meta Details -->
+                    <div class="flex flex-wrap items-center text-sm text-gray-400">
+                        <span class="mr-4">{{ movie.runtime }} min</span>
+                        <span class="mr-4">{{ movie.release_date }}</span>
+                        <div class="flex flex-wrap mt-2 md:mt-0">
+                            {% for genre in movie.genres %}
+                            <span class="px-3 py-1 mb-2 mr-2 text-xs font-semibold bg-gray-800 rounded-full">{{ genre }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Overview -->
+                <div class="mb-8">
+                    <h3 class="mb-2 text-xl font-semibold">Overview</h3>
+                    <p class="text-gray-300">{{ movie.overview }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container flex flex-col px-4 py-8 mx-auto lg:flex-row">
+        <!-- Left Column -->
+        <div class="w-full lg:w-3/4 lg:pr-8">
+            <!-- Cast Section -->
+            <section class="mb-12">
+                <h2 class="pb-2 mb-6 text-2xl font-bold border-b border-gray-800">Top Cast</h2>
+                <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                    {% for cast in cast_details|slice:":10" %}
+                    <a href="{% url 'celebrity_profile' cast.id %}" class="overflow-hidden transition bg-gray-800 rounded-lg hover:bg-gray-700">
+                        <img src="{{ cast.profile_path }}" alt="{{ cast.name }}" class="object-cover w-full h-48" loading="lazy">
+                        <div class="p-3">
+                            <h3 class="font-semibold text-white">{{ cast.name }}</h3>
+                            <p class="text-sm text-gray-400">{{ cast.character }}</p>
+                        </div>
+                    </a>
                     {% endfor %}
-                {% else %}
-                    <div class="no-comments">
-                        <p>No comments available</p>
+                </div>
+            </section>
+
+            <!-- Media Section -->
+            <section class="mb-12">
+                <h2 class="pb-2 mb-6 text-2xl font-bold border-b border-gray-800">Media</h2>
+                <div class="flex mb-4 border-b border-gray-800">
+                    <button onclick="openTab(event, 'trailer-tab')" class="px-4 py-2 font-medium text-white border-b-2 border-red-600 tab-btn active">Trailer</button>
+                    <button onclick="openTab(event, 'photos-tab')" class="px-4 py-2 font-medium text-gray-400 tab-btn hover:text-white">Photos</button>
+                </div>
+                
+                <div id="trailer-tab" class="tab-content active">
+                    <div class="overflow-hidden bg-black rounded-lg aspect-w-16 aspect-h-9">
+                        <iframe id="trailer-iframe" class="w-full h-96" src="https://www.youtube.com/embed/{{ trailer_id }}?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
                     </div>
-                {% endif %}
-                <button class="add-comment-btn" onclick="openCommentOverlay({{ request.user.is_authenticated|yesno:'true,false' }})">Add Comment</button>
+                </div>
+                
+                <div id="photos-tab" class="hidden tab-content">
+                    <div class="p-8 text-center bg-gray-800 rounded-lg">
+                        <p class="text-gray-400">Movie stills would appear here</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reviews Section -->
+            <section>
+                <div class="flex items-center justify-between pb-2 mb-6 border-b border-gray-800">
+                    <h2 class="text-2xl font-bold">Reviews</h2>
+                    <button onclick="openReviewModal()" class="flex items-center px-4 py-2 text-white transition bg-indigo-600 rounded-lg hover:bg-indigo-700">
+                        <i class="mr-2 bx bx-edit"></i> Write a Review
+                    </button>
+                </div>
+                
+                <div class="space-y-6">
+                    {% if comments %}
+                        {% for comment in comments %}
+                        <div class="p-6 bg-gray-800 rounded-lg">
+                            <div class="flex items-start justify-between mb-4">
+                                <div class="flex items-center">
+                                    <div class="flex items-center justify-center w-10 h-10 mr-3 bg-gray-700 rounded-full">
+                                        <i class="text-xl bx bx-user"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-semibold">@{{ comment.user.username }}</h3>
+                                        <span class="text-sm text-gray-400">{{ comment.date_created|date:"M d, Y" }}</span>
+                                    </div>
+                                </div>
+                                {% if comment.user == request.user %}
+                                <form method="post" action="{% url 'delete_comment' comment.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="text-gray-400 transition hover:text-red-500">
+                                        <i class="text-xl bx bx-trash"></i>
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </div>
+                            <div class="text-gray-300">
+                                <p>{{ comment.comment_text }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="p-8 text-center bg-gray-800 rounded-lg">
+                            <i class="mb-2 text-4xl text-gray-600 bx bx-message-rounded"></i>
+                            <p class="text-gray-400">No reviews yet. Be the first to share your thoughts!</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+        
+        <!-- Right Sidebar -->
+        <div class="w-full mt-8 lg:w-1/4 lg:mt-0">
+            <!-- Similar Movies -->
+            <div class="p-6 mb-6 bg-gray-800 rounded-lg">
+                <h2 class="pb-2 mb-4 text-xl font-bold border-b border-gray-700">Similar Movies</h2>
+                <div class="space-y-4">
+                    {% for similar_movie in similar_movies %}
+                    <a href="{% url 'room' similar_movie.id %}" class="block group">
+                        <div class="relative overflow-hidden rounded-lg">
+                            <img src="{{ similar_movie.poster_url }}" alt="{{ similar_movie.title }}" class="object-cover w-full h-40 transition group-hover:opacity-75" loading="lazy">
+                            <div class="absolute inset-0 flex items-center justify-center transition bg-black bg-opacity-50 opacity-0 group-hover:opacity-100">
+                                <i class="text-4xl text-white bx bx-play"></i>
+                            </div>
+                        </div>
+                        <h3 class="mt-2 font-medium text-white transition group-hover:text-indigo-400">{{ similar_movie.title }}</h3>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Facts -->
+            <div class="p-6 bg-gray-800 rounded-lg">
+                <h2 class="pb-2 mb-4 text-xl font-bold border-b border-gray-700">Facts</h2>
+                <div class="space-y-3">
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">Status</span>
+                        <span class="text-white">{{ movie.status }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">Original Language</span>
+                        <span class="text-white">{{ movie.original_language|upper }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">Budget</span>
+                        <span class="text-white">${{ movie.budget|floatformat:"0"|default:"N/A" }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">Revenue</span>
+                        <span class="text-white">${{ movie.revenue|floatformat:"0"|default:"N/A" }}</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    {% else %}
-
-    <p>Movie not found</p>
-
-    {% endif %}
-
-
-    <div class="room__sidebar">
-        <h2>Similar Movies</h2>
-        <div class="sidebar__section">
-            {% for similar_movie in similar_movies %}
-            <a href="{% url 'room' similar_movie.id %}">
-                <img src="{{ similar_movie.poster_url }}" alt="{{ similar_movie.title }} Poster" />
-                <h3>{{ similar_movie.title }}</h3>
-            </a>
-            {% endfor %}
-        </div>
-    </div>
-
 </div>
 
-<!-- Comment Overlay -->
-<div id="comment-overlay" class="comment-overlay">
-    <div class="comment-overlay-content">
+<!-- Review Modal -->
+<div id="review-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-75">
+    <div class="w-full max-w-md p-6 mx-4 bg-gray-800 rounded-lg">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-bold">Write a Review</h2>
+            <button onclick="closeReviewModal()" class="text-2xl text-gray-400 hover:text-white">&times;</button>
+        </div>
         <form method="post" action="{% url 'save_comment' %}">
             {% csrf_token %}
-            <textarea id="comment-input" name="comment_text" placeholder="Write your comment..."></textarea>
             <input type="hidden" name="room_id" value="{{ room.id }}">
-            <div class="comment-overlay-buttons">
-                <button type="submit">Save</button>
-                <button type="button" onclick="closeCommentOverlay()">Discard</button>
+            <div class="mb-4">
+                <textarea name="comment_text" class="w-full p-4 text-white placeholder-gray-400 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Share your thoughts about this movie..." rows="5" required></textarea>
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button type="button" onclick="closeReviewModal()" class="px-4 py-2 text-white transition border border-gray-600 rounded-lg hover:bg-gray-700">Cancel</button>
+                <button type="submit" class="px-4 py-2 text-white transition bg-indigo-600 rounded-lg hover:bg-indigo-700">Post Review</button>
             </div>
         </form>
     </div>
 </div>
+
+<!-- Trailer Modal -->
+<div id="trailer-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-75">
+    <div class="w-full max-w-4xl mx-4">
+        <button onclick="closeTrailerModal()" class="mb-2 text-2xl text-white transition hover:text-red-500">&times;</button>
+        <div class="bg-black aspect-w-16 aspect-h-9">
+            <iframe id="yt-player" class="w-full h-96" src="" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="{% static 'js/room.js' %}"></script>
+
+{% endif %}
 
 {% endblock %}

@@ -128,7 +128,16 @@ STATICFILES_DIRS = [BASE_DIR / 'static',]
 # Add this line to specify the directory where static files will be collected
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+API_KEYS = {
+    'TMDB': '484208b7f5d8c7cfbc90a4b50dab9099',
+    'YOUTUBE': 'AIzaSyCuXYSHGzNIFWWWxcoWEZh2aVUubKzZPGA',
+    'PEXELS': '49S8sYPnL8EJ6Q3vS66MkRg41Ls8cvUCJrJLv2rG5MWdC64JoodbgJRS',
+    'NEWS': '2bf99f487550492a8c130951600c971c',
+}

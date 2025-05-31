@@ -6,41 +6,55 @@
 <script type="text/javascript" src="{% static 'js/home.js' %}"></script>
 
 <div class="main__container w-full mt-10 px-10 md:px-[6rem] lg:px-[10rem] flex flex-col lg:flex-row bg-transparent gap-6">
-  <!-- Poster-section -->
-  <div class="w-full lg:w-[70%] max-h-[500px] relative rounded-md overflow-hidden">
-    <div class="relative w-full h-full">
-      <a href="{% url 'room' popular_movies.0.id %}" class="block w-full h-full">
-        <img src="{{ popular_movies.0.backdrop_url }}" alt="movie-backdrop" class="object-cover w-full h-full transition duration-300 ease-in-out rounded-md hover:brightness-90" />
-      </a>
-      <i class="bx bxs-chevron-left absolute left-0 top-1/2 -translate-y-1/2 border border-gray-400 text-4xl text-white z-20 bg-white/20 hover:bg-white/10 hover:text-[var(--website-theme-color)] cursor-pointer transition"></i>
-      <i class="bx bxs-chevron-right absolute right-0 top-1/2 -translate-y-1/2 border border-gray-400 text-[2.5rem] text-white z-20 bg-white/20 hover:bg-white/10 hover:text-[var(--website-theme-color)] cursor-pointer transition"></i>
-    </div>
+<!-- Poster-section -->
+<div class="w-full lg:w-[70%] md:max-h-[500px] relative rounded-xl overflow-hidden">
+  <div class="relative w-full h-full">
+    <a href="{% url 'room' popular_movies.0.id %}" class="block w-full h-full">
+      <img src="{{ popular_movies.0.backdrop_url }}" alt="movie-backdrop"
+        class="object-cover w-full h-full transition duration-300 ease-in-out rounded-md hover:brightness-90" />
+    </a>
 
-    <a href="{% url 'room' popular_movies.0.id %}" class="block">
-      <div class="w-full max-h-[250px] bg-gradient-to-b from-transparent to-black px-5 py-5 flex items-center relative -translate-y-[75%] rounded-xl">
-        <img src="{{ popular_movies.0.poster_url }}" alt="movie-poster" class="w-[150px] h-[240px] rounded-md transition hover:brightness-90" />
-        <a href="{% url 'add_to_watchlist' popular_movies.0.id %}" class="absolute top-2 left-[16%] text-white text-xl bg-black/50 rounded-full p-1 hover:bg-[var(--website-theme-color)] transition">
+    <!-- Left chevron -->
+    <i class="bx bxs-chevron-left absolute left-0 top-1/2 -translate-y-1/2 border border-gray-400 text-4xl text-white z-20 bg-white/20 hover:bg-white/10 hover:text-[var(--website-theme-color)] cursor-pointer transition"></i>
+
+    <!-- Right chevron -->
+    <i class="bx bxs-chevron-right absolute right-0 top-1/2 -translate-y-1/2 border border-gray-400 text-[2.5rem] text-white z-20 bg-white/20 hover:bg-white/10 hover:text-[var(--website-theme-color)] cursor-pointer transition"></i>
+  </div>
+
+  <a href="{% url 'room' popular_movies.0.id %}" class="block">
+    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-b from-transparent to-black px-4 py-4 flex items-end gap-4 rounded-xl z-10 max-h-[250px]">
+      
+      <!-- Poster image -->
+      <div class="hidden md:flex flex-shrink-0 w-[25%] max-w-[150px] aspect-[2/3]">
+        <img src="{{ popular_movies.0.poster_url }}" alt="movie-poster"
+          class="object-cover w-full h-full transition rounded-md hover:brightness-90" />
+        <a href="{% url 'add_to_watchlist' popular_movies.0.id %}"
+          class="absolute top-2 left-[5%] text-white text-xl rounded-full hover:text-[var(--website-theme-color)]">
           <i class="bx bx-bookmark-plus"></i>
         </a>
+      </div>
 
-        <div class="flex flex-col ml-6">
-          <i class="p-1 text-5xl text-white transition cursor-pointer hover:text-[var(--website-theme-color)] bx bx-play-circle"></i>
-          <div>
-            <h2 class="mb-2 text-2xl text-white">{{ popular_movies.0.title }}</h2>
-            <p class="text-lg text-gray-300">Watch the trailer</p>
-            <p class="flex items-center gap-2 text-base text-gray-300">
-              <i class="text-lg text-white cursor-pointer bx bx-heart"></i> {{ popular_movies.0.likes }}
-            </p>
-          </div>
+      <!-- Movie info -->
+      <div class="flex flex-col text-white">
+        <i class="hidden md:block p-1 text-5xl cursor-pointer transition hover:text-[var(--website-theme-color)] bx bx-play-circle"></i>
+        <div>
+          <h2 class="mb-1 text-2xl font-semibold">{{ popular_movies.0.title }}</h2>
+          <p class="text-lg text-gray-300">Watch the trailer</p>
+          <p class="flex items-center gap-2 mt-1 text-base text-gray-300">
+            <i class="text-lg bx bx-heart"></i> {{ popular_movies.0.likes }}
+          </p>
         </div>
       </div>
-    </a>
-  </div>
+
+    </div>
+  </a>
+</div>
+
 
   <!-- Movie-list section -->
   <div class="w-full lg:w-[30%] h-auto lg:h-[560px] bg-transparent rounded-md flex flex-col items-start gap-3 px-4">
     <h2 class="text-xl font-semibold text-[var(--website-theme-color)]">Up next</h2>
-    <div class="flex flex-col w-full gap-4 px-2 bg-gradient-to-b from-neutral-900 via-neutral-900 to-transparent">
+    <div class="flex flex-col w-full gap-4 px-2 rounded-lg bg-gradient-to-b from-neutral-900 via-neutral-900 to-transparent">
       {% for movie in additional_movies %}
       <a href="{% url 'room' movie.id %}" class="w-full">
         <div class="flex items-center gap-4 w-full h-[150px] cursor-pointer">
@@ -62,173 +76,301 @@
   </div>
 </div>
 
-<div id="featured">
-  <h2>Featured Movies</h2>
-  <div id="featured-container">
-    <a href="{% url 'genre_movies' genre_id=10749 %}">
-      <div id="features">
-        <img src="{% static 'Images/Genre_pics/R.jpg' %}" alt="Genre_pic" id="feature">
-        <h3 id="description">Top 20 Romance Movies</h3>
-      </div>
-    </a>
+<div id="featured" class="w-[80%] px-4 py-8 sm:px-6 lg:px-10 mx-auto">
+  <h2 class="mb-6 text-2xl font-semibold text-white">Featured Movies</h2>
+
+  <!-- Scrollable Container -->
+  <div id="featured-container" class="flex gap-6 pb-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory">
     
-    <a href="{% url 'genre_movies' genre_id=28 %}">
-      <div id="features">
-        <img src="{% static 'Images/Genre_pics/A.jpg' %}" alt="Genre_pic" id="feature">
-        <h3 id="description">Top Action Movies</h3>
+    <!-- Romance -->
+    <a href="{% url 'genre_movies' genre_id=10749 %}" class="block flex-shrink-0 w-[250px] snap-start">
+      <div class="overflow-hidden bg-gray-800 rounded-lg shadow-lg">
+        <img src="{% static 'Images/Genre_pics/R.jpg' %}" alt="Romance Movies"
+             class="w-full h-[350px] object-cover">
+        <h3 class="p-4 text-lg font-medium text-center text-white">Top 20 Romance Movies</h3>
       </div>
     </a>
-    
-    <a href="{% url 'genre_movies' genre_id=27 %}">
-      <div id="features">
-        <img src="{% static 'Images/Genre_pics/H.jpg' %}" alt="Genre_pic" id="feature">
-        <h3 id="description">Best of Horror</h3>
+
+    <!-- Action -->
+    <a href="{% url 'genre_movies' genre_id=28 %}" class="block flex-shrink-0 w-[250px] snap-start">
+      <div class="overflow-hidden bg-gray-800 rounded-lg shadow-lg">
+        <img src="{% static 'Images/Genre_pics/A.jpg' %}" alt="Action Movies"
+             class="w-full h-[350px] object-cover">
+        <h3 class="p-4 text-lg font-medium text-center text-white">Top Action Movies</h3>
       </div>
     </a>
-    
-    <a href="{% url 'genre_movies' genre_id=9648 %}">
-      <div id="features">
-        <img src="{% static 'Images/Genre_pics/M.jpg' %}" alt="Genre_pic" id="feature">
-        <h3 id="description">Best 20 Mystery Movies</h3>
+
+    <!-- Horror -->
+    <a href="{% url 'genre_movies' genre_id=27 %}" class="block flex-shrink-0 w-[250px] snap-start">
+      <div class="overflow-hidden bg-gray-800 rounded-lg shadow-lg">
+        <img src="{% static 'Images/Genre_pics/H.jpg' %}" alt="Horror Movies"
+             class="w-full h-[350px] object-cover">
+        <h3 class="p-4 text-lg font-medium text-center text-white">Best of Horror</h3>
       </div>
     </a>
-    
-    <a href="{% url 'anime' %}">
-      <div id="features">
-        <img src="{% static 'Images/Genre_pics/RA.jpg' %}" alt="Genre_pic" id="feature">
-        <h3 id="description">Find Top 20 Animation Shows</h3>
+
+    <!-- Mystery -->
+    <a href="{% url 'genre_movies' genre_id=9648 %}" class="block flex-shrink-0 w-[250px] snap-start">
+      <div class="overflow-hidden bg-gray-800 rounded-lg shadow-lg">
+        <img src="{% static 'Images/Genre_pics/M.jpg' %}" alt="Mystery Movies"
+             class="w-full h-[350px] object-cover">
+        <h3 class="p-4 text-lg font-medium text-center text-white">Best 20 Mystery Movies</h3>
       </div>
     </a>
+
+    <!-- Animation -->
+    <a href="{% url 'anime' %}" class="block flex-shrink-0 w-[250px] snap-start">
+      <div class="overflow-hidden bg-gray-800 rounded-lg shadow-lg">
+        <img src="{% static 'Images/Genre_pics/RA.jpg' %}" alt="Animation Shows"
+             class="w-full h-[350px] object-cover">
+        <h3 class="p-4 text-lg font-medium text-center text-white">Find Top 20 Animation Shows</h3>
+      </div>
+    </a>
+
   </div>
 </div>
 
 <div class="celebrities-section">
   <i id="celebrity-list__prev" class="bx bx-chevron-left"></i>
   <i id="celebrity-list__next" class="bx bx-chevron-right"></i>
-  <h2><a href="{% url 'celebrities_list' %}">Top Celebrities</a> <i class="bx bx-chevron-right"></i></h2>
+  <h2><a href="{% url 'celebrities_list' %}" class="pl-2 mb-5 text-2xl text-white">Top Celebrities</a> <i class="bx bx-chevron-right"></i></h2>
   <div id="celebrities-container">
     <!-- Celebrity list items will be dynamically generated here -->
     {% for celebrity in celebrities %}
-    <a href="{% url 'celebrity_profile' celebrity.id %}">
-      <div class="celebrity-card" data-tilt data-tilt-max="25" data-tilt-speed="400">
-        <img src="{{ celebrity.profile_picture_url }}" alt="celebrity-profile-pic" class="celebrity-card__pic" />  
-        <h3>{{ celebrity.name }}</h3>
-        <p>({{ celebrity.popularity }})</p>
+          <a href="{% url 'celebrity_profile' celebrity.id %}">
+                    <div class="w-[180px] h-[250px] p-2 rounded-[10px] border border-white text-center bg-transparent cursor-pointer 
+                  transition-transform duration-300 ease-in-out hover:scale-95 hover:bg-white/10 shadow-md 
+                  hover:shadow-xl flex-shrink-0 mx-2"
+          data-tilt data-tilt-max="25" data-tilt-speed="400">
+
+          <img src="{{ celebrity.profile_picture_url }}"
+              alt="celebrity-profile-pic"
+              class="w-full h-[150px] rounded-[10px] object-cover mb-2 transition-transform duration-300 ease-in-out hover:scale-110 hover:brightness-110" />
+
+          <h3 class="text-white text-lg mb-2 transition-colors duration-300 hover:text-[var(--website-theme-color)]">
+            {{ celebrity.name }}
+          </h3>
+
+          <p class="text-base text-gray-300 transition-colors duration-300 hover:text-white">
+            ({{ celebrity.popularity }})
+          </p>
       </div>
+
     </a>
     {% endfor %}
   </div>
 </div>
 
 <div class="watchlist-section">
-  <h2>Watchlist</h2>
-  <div id="watchlist-container">
-    {% if request.user.is_authenticated %}
-    <!-- Watchlist items will be dynamically generated here -->
+  <h2 class="text-2xl">Watchlist</h2>
+  <div id="watchlist-container" class="grid grid-cols-2 gap-6 px-4 py-6 overflow-y-auto sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+  {% if request.user.is_authenticated %}
     {% for movie in watchlist %}
-    <div class="watchlist-card">
-      <a href="{% url 'room' movie.id %}">
-        <img src="{{ movie.poster_url }}" alt="movie-poster" class="watchlist-card__poster" />
-        <div class="watchlist-card__details">
-          <h3>{{ movie.title }}</h3>
-          <p>{{ movie.title }}</p>
-          <p><i class="bx bx-heart"></i>{{ movie.likes }}</p>
+    <div class="group relative rounded-xl overflow-hidden bg-[#2c2c2c] border border-white/30 shadow-md hover:shadow-lg transition duration-300">
+      <a href="{% url 'room' movie.id %}" class="block">
+        <img src="{{ movie.poster_url }}" alt="movie-poster" class="object-cover w-full h-40 transition-transform duration-300 rounded-t-xl group-hover:scale-105 group-hover:brightness-110" />
+        <div class="p-2 text-left">
+          <h3 class="text-base font-semibold text-white truncate">{{ movie.title }}</h3>
+          <p class="text-sm text-gray-300 truncate">{{ movie.title }}</p>
+          <p class="flex items-center gap-1 text-sm text-white"><i class='bx bx-heart'></i>{{ movie.likes }}</p>
         </div>
       </a>
-      <a href="{% url 'remove_from_watchlist' movie.id %}" class="remove-btn"><i class='bx bx-x'></i></a>
+      <a href="{% url 'remove_from_watchlist' movie.id %}" class="absolute top-2 right-2 bg-[var(--website-theme-color)] text-black text-lg rounded-full p-1 transition-transform duration-300 hover:scale-125 hover:text-[var(--website-theme-color)] hover:bg-white">
+        <i class='bx bx-x'></i>
+      </a>
     </div>
     {% endfor %}
-    {% else %}
-    <p id="watchlist-login">Login to view your watchlist</p>
-    {% endif %}
-  </div>
+  {% else %}
+    <p id="watchlist-login" class="text-lg text-center text-white col-span-full">Login to view your watchlist</p>
+  {% endif %}
+</div>
 </div>
 
 <div class="top-movies-section">
-  <h2>Top Movies</h2>
+  <h2 class="text-2xl">Top Movies</h2>
   <i id="top-movie-list__prev" class="bx bx-chevron-left"></i>
   <i id="top-movie-list__next" class="bx bx-chevron-right"></i>
   <div id="top-movies-container">
     <!-- Top movies list items will be dynamically generated here -->
     {% for movie in top_movies %}
     <a href="{% url 'room' movie.id %}">
-      <div class="top-movies-card">
-        <img src="{{ movie.poster_url }}" alt="movie-poster" class="top-movies-card__poster" />
-        <div class="top-movies-card__details">
-          <h3>{{ movie.title }}</h3>
-        </div>
-      </div>
+     <div class="bg-[#2c2c2c] border border-white border-opacity-60 rounded-[10px] text-center p-3 w-[200px] h-[300px] flex flex-col justify-between transition duration-300 hover:-translate-y-2 hover:shadow-lg hover:bg-white/10 overflow-hidden">
+  <img src="{{ movie.poster_url }}" alt="movie-poster"
+       class="w-full h-[220px] object-cover rounded-[10px] mb-2 transition-transform duration-300 hover:scale-105 hover:brightness-110" />
+
+  <h3 class="text-white text-[1.1rem] leading-snug truncate transition-colors duration-300 hover:text-[var(--website-theme-color)]">
+    {{ movie.title }} ({{ movie.year }})
+  </h3>
+</div>
+
     </a>
     {% endfor %}
   </div>
 </div>
+
 
 <div class="popular-genre-section">
   <h2>Popular Genres</h2>
   <i id="popular-genre-list__prev" class="bx bx-chevron-left"></i>
   <i id="popular-genre-list__next" class="bx bx-chevron-right"></i>
-  <div id="popular-genre-container">
-    <!-- Popular genre list items will be dynamically generated here -->
+  <div id="popular-genre-container" class="relative flex p-4">
     {% for genre in top_genre %}
-    <a href="{% url 'genre_movies' genre_id=genre.id %}">
-      <div class="popular-genre-card">
-        <img src="{{ genre.poster_url }}" alt="genre-poster" class="popular-genre-card__poster" />
-        <h3>{{ genre.name }}</h3>
-      </div>
-    </a>
+      <a href="{% url 'genre_movies' genre_id=genre.id %}" class="block w-full group sm:w-72 md:w-80 lg:w-96 fade-in" style="--i:{{ forloop.counter0 }};">
+        <div class="overflow-hidden transition-all duration-300 bg-black border border-white shadow-md rounded-xl transform group-hover:-translate-y-2 group-hover:shadow-[0_0_15px_var(--website-theme-color)] group-hover:bg-white/10 group-hover:animate-pulse-slow">
+          <img src="{{ genre.poster_url }}" alt="genre-poster"
+              class="object-cover w-full transition-transform duration-300 h-52 sm:h-56 rounded-t-xl group-hover:scale-105 group-hover:brightness-110" />
+          <div class="p-4 text-center">
+            <h3 class="text-white text-lg font-semibold transition-colors duration-300 group-hover:text-[var(--website-theme-color)]">
+              {{ genre.name }}
+            </h3>
+          </div>
+        </div>
+      </a>
+    {% empty %}   
     {% endfor %}
   </div>
 </div>
 
-<div class="top-box-office">
-  <h2>Top Box Office Movies</h2>
-  <div id="top-box-office-container">
-    <!-- Top box office movies list items will be dynamically generated here -->
-    <div class="column">
+
+<div class="top-box-office w-[80%] mx-auto py-6 bg-gradient-to-br from-[#111] to-[#1b1b1b] rounded-xl shadow-lg">
+  <h2 class="text-white text-2xl font-semibold border-l-4 border-[var(--website-theme-color)] pl-4 mb-6">
+    Top Box Office Movies
+  </h2>
+
+  <div id="top-box-office-container" class="grid grid-cols-1 gap-6 md:grid-cols-2">
+    <!-- Column 1 -->
+    <div class="flex flex-col gap-6 md:border-r md:pr-6 border-white/10">
       {% for movie in top_box_office %}
-      {% if forloop.counter0|divisibleby:2 %}
-      <div class="top-box-office-item">
-        <span>{{ forloop.counter }}.</span>
-        <img src="{{ movie.poster_url }}" alt="movie-poster" class="top-box-office-item__poster" />
-        <div class="top-box-office-item__details">
-          <span>{{ movie.title }}</span>
-          <span>Revenue: {{ movie.revenue }}</span>
+        {% if forloop.counter0|divisibleby:2 %}
+        <div class="flex items-center w-full h-32 text-white group rounded-lg px-3 transition-all duration-300 hover:bg-white/5 hover:shadow-md hover:scale-[1.015]">
+          {% if forloop.counter == 1 %}
+          <span class="flex items-center justify-center w-8 h-8 mr-4 text-sm font-bold text-black bg-yellow-400 rounded-full">
+            {{ forloop.counter }}
+          </span>
+          {% elif forloop.counter == 2 %}
+          <span class="flex items-center justify-center w-8 h-8 mr-4 text-sm font-bold text-black bg-gray-300 rounded-full">
+            {{ forloop.counter }}
+          </span>
+          {% elif forloop.counter == 3 %}
+          <span class="flex items-center justify-center w-8 h-8 mr-4 text-sm font-bold text-black rounded-full bg-amber-700">
+            {{ forloop.counter }}
+          </span>
+          {% else %}
+          <span class="w-8 h-8 flex items-center justify-center mr-4 text-sm font-bold text-black bg-[var(--website-theme-color)] rounded-full">
+            {{ forloop.counter }}
+          </span>
+          {% endif %}
+          <img src="{{ movie.poster_url }}" alt="movie-poster"
+               class="object-cover w-20 mr-4 transition-transform duration-300 rounded-md h-28 group-hover:scale-105" />
+          <div class="flex flex-col justify-center">
+            <span class="text-lg font-semibold">{{ movie.title }}</span>
+            <span class="mt-1 text-sm text-gray-400">Revenue: {{ movie.revenue }}</span>
+          </div>
         </div>
-      </div>
-      {% endif %}
+        {% endif %}
       {% endfor %}
     </div>
-    <div class="column">
+
+    <!-- Column 2 -->
+    <div class="flex flex-col gap-6">
       {% for movie in top_box_office %}
-      {% if not forloop.counter0|divisibleby:2 %}
-      <div class="top-box-office-item">
-        <span>{{ forloop.counter }}.</span>
-        <img src="{{ movie.poster_url }}" alt="movie-poster" class="top-box-office-item__poster" />
-        <div class="top-box-office-item__details">
-          <span>{{ movie.title }}</span>
-          <span>Revenue: {{ movie.revenue }}</span>
+        {% if not forloop.counter0|divisibleby:2 %}
+        <div class="flex items-center w-full h-32 text-white group rounded-lg px-3 transition-all duration-300 hover:bg-white/5 hover:shadow-md hover:scale-[1.015]">
+          {% if forloop.counter == 1 %}
+          <span class="flex items-center justify-center w-8 h-8 mr-4 text-sm font-bold text-black bg-yellow-400 rounded-full">
+            {{ forloop.counter }}
+          </span>
+          {% elif forloop.counter == 2 %}
+          <span class="flex items-center justify-center w-8 h-8 mr-4 text-sm font-bold text-black bg-gray-300 rounded-full">
+            {{ forloop.counter }}
+          </span>
+          {% elif forloop.counter == 3 %}
+          <span class="flex items-center justify-center w-8 h-8 mr-4 text-sm font-bold text-black rounded-full bg-amber-700">
+            {{ forloop.counter }}
+          </span>
+          {% else %}
+          <span class="w-8 h-8 flex items-center justify-center mr-4 text-sm font-bold text-black bg-[var(--website-theme-color)] rounded-full">
+            {{ forloop.counter }}
+          </span>
+          {% endif %}
+          <img src="{{ movie.poster_url }}" alt="movie-poster"
+               class="object-cover w-20 mr-4 transition-transform duration-300 rounded-md h-28 group-hover:scale-105" />
+          <div class="flex flex-col justify-center">
+            <span class="text-lg font-semibold">{{ movie.title }}</span>
+            <span class="mt-1 text-sm text-gray-400">Revenue: {{ movie.revenue }}</span>
+          </div>
         </div>
-      </div>
-      {% endif %}
+        {% endif %}
       {% endfor %}
     </div>
   </div>
 </div>
 
-<div class="comingsoon-list">
-  <h2>Coming Soon In Theaters</h2>
-  <i id="comingsoon-list__prev" class="bx bx-chevron-left"></i>
-  <i id="comingsoon-list__next" class="bx bx-chevron-right"></i>
-  <div id="comingsoon-list-container">
-    <!-- Coming soon movies list items will be dynamically generated here -->
+
+
+<div class="comingsoon-list w-[90%] mx-auto py-12 relative">
+  <div class="flex items-center justify-between mb-8">
+    <h2 class="text-2xl md:text-3xl font-bold text-white border-l-4 border-[var(--website-theme-color)] pl-4">
+      Coming Soon In Theaters
+    </h2>
+    <a href="{% url 'upcoming_movies' %}" class="text-sm text-gray-400 hover:text-[var(--website-theme-color)] transition-colors">
+      View All →
+    </a>
+  </div>
+
+  <!-- Scroll Buttons (Square) -->
+  <button id="comingsoon-list__prev" class="absolute z-10 flex items-center justify-center w-12 h-12 text-xl text-white -translate-y-1/2 border-2 rounded-lg cursor-pointer bg-black/80 hover:bg-[var(--website-theme-color)]/80 border-white/30 left-0 top-1/2 transition-all">
+    ←
+  </button>
+  <button id="comingsoon-list__next" class="absolute z-10 flex items-center justify-center w-12 h-12 text-xl text-white -translate-y-1/2 border-2 rounded-lg cursor-pointer bg-black/80 hover:bg-[var(--website-theme-color)]/80 border-white/30 right-0 top-1/2 transition-all">
+    →
+  </button>
+
+  <!-- Horizontal Scroll Container -->
+  <div id="comingsoon-list-container" class="flex gap-8 pb-4 overflow-x-auto no-scrollbar scroll-smooth snap-x">
     {% for movie in upcoming_movies %}
-    <a href="{% url 'room' movie.id %}">
-      <div class="comingsoon-list-card">
-        <img src="{{ movie.backdrop_url }}" alt="backdrop-poster" class="comingsoon-list-card__poster" />
-        <div class="comingsoon-list-card__details">
-          <h3>{{ movie.title }}</h3>
-          <p><i class="bx bx-play-circle"></i> Play Trailer</p>
-          <p><i class="bx bx-heart"></i>{{ movie.likes }}</p>
+    <a href="{% url 'room' movie.id %}" class="flex-shrink-0 snap-start group">
+      <div class="relative w-[280px] h-[420px] bg-gradient-to-b from-gray-900/80 to-[#2c2c2c] border border-white/20 rounded-xl overflow-hidden transition-all duration-300 hover:border-[var(--website-theme-color)] hover:shadow-lg hover:shadow-[var(--website-theme-color)]/20">
+        <!-- Movie Backdrop with Gradient Overlay -->
+        <div class="relative h-[250px] overflow-hidden">
+          <img 
+            src="{{ movie.backdrop_url }}" 
+            alt="{{ movie.title }} backdrop" 
+            class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+            loading="lazy"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+          
+          <!-- Release Date Badge -->
+          <span class="absolute px-3 py-1 text-xs font-bold text-white rounded-full top-4 right-4 bg-black/80">
+            {{ movie.release_date|date:"M d" }}
+          </span>
+        </div>
+        
+        <div class="p-4 text-white">
+          <h3 class="text-lg font-bold mb-2 group-hover:text-[var(--website-theme-color)] transition-colors">{{ movie.title }}</h3>
+          
+          <div class="flex items-center justify-between text-sm">
+            <div class="flex items-center gap-2 text-gray-300">
+              <i class="text-lg bx bx-play-circle"></i>
+              <span>Trailer</span>
+            </div>
+            
+            <div class="flex items-center gap-2">
+              <i class="text-lg text-red-500 bx bx-heart"></i>
+              <span>{{ movie.likes }}K</span>
+            </div>
+          </div>
+          
+          <!-- Hidden Details on Hover -->
+          <div class="absolute bottom-0 left-0 right-0 p-4 transition-transform duration-300 translate-y-full bg-black/80 group-hover:translate-y-0">
+            <p class="mb-2 text-xs text-gray-300 line-clamp-2">{{ movie.short_description }}</p>
+            <div class="flex gap-1">
+              {% for genre in movie.genres|slice:":3" %}
+              <span class="px-2 py-1 text-xs bg-gray-800 rounded-full">{{ genre }}</span>
+              {% endfor %}
+            </div>
+          </div>
         </div>
       </div>
     </a>
@@ -236,34 +378,74 @@
   </div>
 </div>
 
-<div class="top-news">
-  <h2>Top News</h2>
-  <div id="top-news-container">
-    <!-- Top news articles will be dynamically generated here -->
+
+<div class="top-news w-[80%] mx-auto py-5">
+  <!-- Header -->
+  <h2 class="text-white text-2xl font-semibold border-l-4 border-[var(--website-theme-color)] pl-3 mb-6">
+    Top News
+  </h2>
+
+  <!-- News Grid -->
+  <div id="top-news-container" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
     {% for article in top_news %}
-    <a href="{{ article.url }}">
-      <div class="top-news-card">
-        <img src="{{ article.image_url }}" alt="news-image" id="news-image">
-        <h3>{{ article.title }}</h3>
+    <a href="{{ article.url }}" class="group">
+      <div class="top-news-card relative bg-gray-800 border border-gray-600 rounded-xl overflow-hidden h-64 transition-all duration-300 hover:shadow-lg hover:shadow-[var(--website-theme-color)]/20">
+        <!-- News Image -->
+        <img 
+          src="{{ article.image_url }}" 
+          alt="{{ article.title }}"
+          class="object-cover w-full h-32 transition-all duration-500 news-image rounded-t-xl group-hover:h-full group-hover:rounded-none"
+        />
+        
+        <!-- Content Overlay -->
+        <div class="absolute inset-0 flex flex-col justify-end p-4 transition-opacity duration-300 opacity-0 bg-gradient-to-t from-black/80 to-transparent group-hover:opacity-100">
+          <h3 class="text-white font-bold text-lg mb-2 transition-colors group-hover:text-[var(--website-theme-color)]">
+            {{ article.title }}
+          </h3>
+          <p class="hidden text-sm text-gray-300 line-clamp-2 group-hover:block">
+            {{ article.summary|default:"Read more..." }}
+          </p>
+        </div>
+        
+        <!-- Default State Content -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 bg-gray-800/90 group-hover:hidden">
+          <h3 class="font-medium text-center text-white">
+            {{ article.title }}
+          </h3>
+        </div>
       </div>
     </a>
     {% endfor %}
   </div>
 </div>
 
-<div class="recently-viewed-pages">
-  <h2>Recently Viewed Pages</h2>
-  <form method="post" action="{% url 'clear_recently_viewed' %}">
-    {% csrf_token %}
-    <button type="submit" class="clear-recently-viewed-btn">Clear</button>
-  </form>
-  <div id="recently-viewed-pages-container">
-    <!-- Recently viewed pages list items will be dynamically generated here -->
+
+
+<div class="recently-viewed-pages w-[80%] mx-auto py-5 relative min-h-[500px]">
+  <div class="flex items-center justify-between mb-5">
+    <h2 class="text-white text-xl md:text-2xl font-semibold border-l-4 border-[var(--website-theme-color)] pl-3">
+      Recently Viewed Pages
+    </h2>
+    <form method="post" action="{% url 'clear_recently_viewed' %}">
+      {% csrf_token %}
+      <button type="submit" class="text-sm text-gray-400 transition-colors hover:text-white">
+        Clear All
+      </button>
+    </form>
+  </div>
+
+  <div id="recently-viewed-pages-container" class="grid h-full grid-cols-1 gap-4 p-4 overflow-y-auto sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
     {% for page in recently_viewed_pages %}
-    <a href="{{ page.url }}">
-      <div class="recently-viewed-page-card">
-        <h3>{{ page.title }}</h3>
-        <p>{{ page.summary }}</p>
+    <a href="{{ page.url }}" class="group">
+      <div class="recently-viewed-page-card bg-gray-800 border border-gray-600 rounded-xl p-4 h-32 transition-all duration-300 
+                  hover:bg-gray-700 hover:border-[var(--website-theme-color)] hover:shadow-lg hover:shadow-[var(--website-theme-color)]/10
+                  group-hover:-translate-y-2">
+        <h3 class="text-white font-medium text-lg mb-2 truncate group-hover:text-[var(--website-theme-color)] transition-colors">
+          {{ page.title }}
+        </h3>
+        <p class="text-sm text-gray-400 transition-colors line-clamp-2 group-hover:text-gray-300">
+          {{ page.summary }}
+        </p>
       </div>
     </a>
     {% endfor %}
@@ -326,5 +508,9 @@
     });
   });
 </script>
+
+<div class="loading-overlay">
+  <img src="{% static 'assets/Ripple_loader.svg' %}" alt="Loading..." />
+</div>
 
 {% endblock %}

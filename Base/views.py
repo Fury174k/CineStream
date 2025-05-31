@@ -8,12 +8,18 @@ from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 import math
+from datetime import datetime
+from django.core.cache import cache 
 from django.views.decorators.csrf import csrf_exempt
 import json
+from django.conf import settings
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Create your views here
 def homepage(request):
-    api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
+    api_key = settings.API_KEYS['TMDB']
     base_url = 'https://api.themoviedb.org/3/movie/{}?api_key={}'
     placeholder_image = '/static/Images/placeholders/image_placeholder.png'
 
@@ -37,7 +43,7 @@ def homepage(request):
         ]
 
         # Fetch additional movies data
-        additional_movie_ids = [1203329, 822119, 799766]
+        additional_movie_ids = [1223329, 122619, 779766]
         additional_movies = []
         for movie_id in additional_movie_ids:
             response = requests.get(base_url.format(movie_id, api_key))
@@ -129,10 +135,10 @@ def remove_from_watchlist(request, movie_id):
     return redirect('home')
 
 def roomPage(request, id):
-    api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
+    api_key = settings.API_KEYS['TMDB']
+    youtube_api_key = settings.API_KEYS['YOUTUBE']
     base_url = 'https://api.themoviedb.org/3/movie/{}?api_key={}'
     similar_movies_url = f'https://api.themoviedb.org/3/movie/{id}/similar?api_key={api_key}'
-    youtube_api_key = 'AIzaSyCuXYSHGzNIFWWWxcoWEZh2aVUubKzZPGA'
     youtube_search_url = 'https://www.googleapis.com/youtube/v3/search?'
     placeholder_image = '/static/Images/placeholders/image_placeholder.png'
 
@@ -321,7 +327,7 @@ def registerUser(request):
         return render(request, 'register.html')
 
 def get_movies_by_genre(genre_id, keyword=None):
-    api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
+    api_key = settings.API_KEYS['TMDB']
     base_url = 'https://api.themoviedb.org/3/discover/movie?api_key={}&with_genres={}'.format(api_key, genre_id)
     if keyword:
         base_url += '&with_keywords={}'.format(keyword)
@@ -341,7 +347,7 @@ def get_movies_by_genre(genre_id, keyword=None):
     ]
 
 def get_movies_by_keyword(keyword):
-    api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
+    api_key = settings.API_KEYS['TMDB']
     base_url = 'https://api.themoviedb.org/3/search/movie?api_key={}&query={}'.format(api_key, keyword)
     placeholder_image = '/static/Images/placeholders/image_placeholder.png'
 
@@ -384,7 +390,7 @@ def genrePage(request, genre_id=None, keyword=None):
         return render(request, 'genre.html', {'error': str(e)})
 
 def celebrity_profile(request, id):
-    api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
+    api_key = settings.API_KEYS['TMDB']
     base_url = f'https://api.themoviedb.org/3/person/{id}?api_key={api_key}'
     placeholder_image = '/static/Images/placeholders/image_placeholder.png'
 
@@ -428,7 +434,7 @@ def celebrity_profile(request, id):
         return render(request, 'celebrity_profile.html', {'error': str(e)})
 
 def get_top_movies():
-    api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
+    api_key = settings.API_KEYS['TMDB']
     base_url = 'https://api.themoviedb.org/3/movie/popular?api_key={}'
     placeholder_image = '/static/Images/placeholders/image_placeholder.png'
     response = requests.get(base_url.format(api_key))
@@ -438,6 +444,7 @@ def get_top_movies():
         {
             'id': movie.get('id'),
             'title': movie.get('title'),
+            'year': movie.get('release_date', '')[:4],  # Extract the year from the release date
             'poster_url': f"https://image.tmdb.org/t/p/original{movie.get('poster_path')}" if movie.get('poster_path') else placeholder_image,
             'release_date': movie.get('release_date'),
             'likes': movie.get('vote_count')
@@ -448,19 +455,23 @@ def get_top_movies():
     return top_movies
 
 def get_popular_genres():
-    api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
-    pexels_api_key = '49S8sYPnL8EJ6Q3vS66MkRg41Ls8cvUCJrJLv2rG5MWdC64JoodbgJRS'
+    api_key = settings.API_KEYS['TMDB']
+    pexels_api_key = settings.API_KEYS['PEXELS']
     genre_url = f'https://api.themoviedb.org/3/genre/movie/list?api_key={api_key}'
     placeholder_image = '/static/Images/placeholders/image_placeholder.png'
     response = requests.get(genre_url)
-    data = response.json().get('genres', [])[:10]
+    data = response.json().get('genres', [])  # Fetch all genres
 
     top_genre = []
     for genre in data:
         pexels_url = f'https://api.pexels.com/v1/search?query={genre["name"]}&per_page=1&order_by=popular'
         pexels_response = requests.get(pexels_url, headers={'Authorization': pexels_api_key})
         pexels_data = pexels_response.json()
-        image_url = pexels_data['photos'][0]['src']['medium'] if pexels_data['photos'] else placeholder_image
+
+        # Handle missing 'photos' key
+        image_url = placeholder_image
+        if 'photos' in pexels_data and pexels_data['photos']:
+            image_url = pexels_data['photos'][0]['src']['medium']
         
         top_genre.append({
             'id': genre.get('id'),
@@ -479,7 +490,7 @@ def format_revenue(revenue):
         return str(revenue)
 
 def get_top_box_office_movies():
-    api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
+    api_key = settings.API_KEYS['TMDB']
     popular_url = f'https://api.themoviedb.org/3/movie/popular?api_key={api_key}'
     placeholder_image = '/static/Images/placeholders/image_placeholder.png'
     response = requests.get(popular_url)
@@ -493,7 +504,7 @@ def get_top_box_office_movies():
         details_data = details_response.json()
         
         revenue = details_data.get('revenue', 0)
-        formatted_revenue = format_revenue(revenue)
+        formatted_revenue = format_revenue(revenue) if revenue > 0 else "N/A"  # Replace with "N/A" if revenue is zero
         
         top_box_office.append({
             'id': movie_id,
@@ -505,30 +516,50 @@ def get_top_box_office_movies():
     return top_box_office
 
 def get_upcoming_movies():
-    api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
+    api_key = settings.API_KEYS['TMDB']
     upcoming_url = f'https://api.themoviedb.org/3/movie/upcoming?api_key={api_key}'
+    movie_detail_url = 'https://api.themoviedb.org/3/movie/{movie_id}?api_key=' + api_key
     placeholder_image = '/static/Images/placeholders/image_placeholder.png'
+
     response = requests.get(upcoming_url)
     data = response.json().get('results', [])[:10]
 
-    upcoming_movies = [
-        {
-            'id': movie.get('id'),
-            'title': movie.get('title'),
-            'release_date': movie.get('release_date'),
-            'backdrop_url': f"https://image.tmdb.org/t/p/original{movie.get('backdrop_path')}" if movie.get('backdrop_path') else placeholder_image,
-            'likes': movie.get('vote_count')
-        }
-        for movie in data
-    ]
+    upcoming_movies = []
+
+    for movie in data:
+        movie_id = movie.get('id')
+        title = movie.get('title')
+        release_date = movie.get('release_date')
+        backdrop_url = (
+            f"https://image.tmdb.org/t/p/original{movie.get('backdrop_path')}"
+            if movie.get('backdrop_path') else placeholder_image
+        )
+        likes = movie.get('vote_count')
+
+        # Fetch additional details (overview + genres)
+        details = requests.get(movie_detail_url.format(movie_id=movie_id)).json()
+        short_description = details.get('overview', '')[:100] + '...'
+        genres = [genre.get('name') for genre in details.get('genres', [])]
+
+        upcoming_movies.append({
+            'id': movie_id,
+            'title': title,
+            'release_date': release_date,
+            'backdrop_url': backdrop_url,
+            'likes': likes,
+            'short_description': short_description,
+            'genres': genres,
+        })
+
     return upcoming_movies
 
+
 def get_top_news():
-    api_key = '2bf99f487550492a8c130951600c971c'
+    api_key = settings.API_KEYS['NEWS']
     news_url = f'https://newsapi.org/v2/top-headlines?category=entertainment&apiKey={api_key}'
     placeholder_image = '/static/Images/placeholders/image_placeholder.png'
     response = requests.get(news_url)
-    data = response.json().get('articles', [])[:6]
+    data = response.json().get('articles', [])[:8]
 
     top_news = [
         {
@@ -543,7 +574,7 @@ def get_top_news():
 
 def searchMovie(request):
     q = request.GET.get('q') if request.GET.get('q') else ''
-    api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
+    api_key = settings.API_KEYS['TMDB']
     search_url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={q}'
     placeholder_image = '/static/Images/placeholders/image_placeholder.png'
 
@@ -572,7 +603,7 @@ def searchMovie(request):
         return render(request, 'searchedMovies.html', {'error': str(e), 'query': q})
 
 def getTop50movies(request):
-    api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
+    api_key = settings.API_KEYS['TMDB']
     base_url = 'https://api.themoviedb.org/3/movie/top_rated?api_key={}&page={}'
     placeholder_image = '/static/Images/placeholders/image_placeholder.png'
     
@@ -637,7 +668,7 @@ def track_recently_viewed(request, page_title, page_url, page_summary):
 
 @login_required
 def watchlistPage(request):
-    api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
+    api_key = settings.API_KEYS['TMDB']
     base_url = 'https://api.themoviedb.org/3/movie/{}?api_key={}'
     placeholder_image = '/static/Images/placeholders/image_placeholder.png'
 
@@ -674,7 +705,7 @@ def custom_500_view(request):
     return render(request, 'error.html', {'error': 'Server error'}, status=500)
 
 def celebrities_list(request):
-    api_key = '484208b7f5d8c7cfbc90a4b50dab9099'
+    api_key = settings.API_KEYS['TMDB']
     celebrity_url = f'https://api.themoviedb.org/3/person/popular?api_key={api_key}'
     placeholder_image = '/static/Images/placeholders/image_placeholder.png'
 
@@ -700,3 +731,5 @@ def celebrities_list(request):
     except requests.RequestException as e:
         messages.error(request, "Failed to fetch data from the external API.")
         return render(request, 'error.html', {'error': str(e)})
+
+
