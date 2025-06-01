@@ -5,74 +5,98 @@
 <link rel="stylesheet" href='{% static "css/home.css" %}' />
 <script type="text/javascript" src="{% static 'js/home.js' %}"></script>
 
-<div class="main__container w-full mt-10 px-10 md:px-[6rem] lg:px-[10rem] flex flex-col lg:flex-row bg-transparent gap-6">
-<!-- Poster-section -->
-<div class="w-full lg:w-[70%] md:max-h-[500px] relative rounded-xl overflow-hidden">
-  <div class="relative w-full h-full">
-    <a href="{% url 'room' popular_movies.0.id %}" class="block w-full h-full">
-      <img src="{{ popular_movies.0.backdrop_url }}" alt="movie-backdrop"
-        class="object-cover w-full h-full transition duration-300 ease-in-out rounded-md hover:brightness-90" />
-    </a>
+<div class="flex flex-col w-full gap-6 px-4 mt-10 bg-transparent main__container sm:px-6 md:px-8 lg:px-12 xl:px-16 lg:flex-row">
+  <!-- Poster-section -->
+  <div class="w-full lg:w-[70%] h-auto md:h-[550px] relative rounded-xl overflow-hidden group">
+    <div class="relative w-full h-full">
+      <a href="{% url 'room' popular_movies.0.id %}" class="block w-full h-full aspect-video md:aspect-auto">
+        <img src="{{ popular_movies.0.backdrop_url }}" alt="movie-backdrop"
+          class="object-cover w-full h-full transition duration-300 ease-in-out rounded-md hover:brightness-90 group-hover:scale-[1.01]" 
+          loading="lazy" />
+      </a>
 
-    <!-- Left chevron -->
-    <i class="bx bxs-chevron-left absolute left-0 top-1/2 -translate-y-1/2 border border-gray-400 text-4xl text-white z-20 bg-white/20 hover:bg-white/10 hover:text-[var(--website-theme-color)] cursor-pointer transition"></i>
-
-    <!-- Right chevron -->
-    <i class="bx bxs-chevron-right absolute right-0 top-1/2 -translate-y-1/2 border border-gray-400 text-[2.5rem] text-white z-20 bg-white/20 hover:bg-white/10 hover:text-[var(--website-theme-color)] cursor-pointer transition"></i>
-  </div>
-
-  <a href="{% url 'room' popular_movies.0.id %}" class="block">
-    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-b from-transparent to-black px-4 py-4 flex items-end gap-4 rounded-xl z-10 max-h-[250px]">
-      
-      <!-- Poster image -->
-      <div class="hidden md:flex flex-shrink-0 w-[25%] max-w-[150px] aspect-[2/3]">
-        <img src="{{ popular_movies.0.poster_url }}" alt="movie-poster"
-          class="object-cover w-full h-full transition rounded-md hover:brightness-90" />
-        <a href="{% url 'add_to_watchlist' popular_movies.0.id %}"
-          class="absolute top-2 left-[5%] text-white text-xl rounded-full hover:text-[var(--website-theme-color)]">
-          <i class="bx bx-bookmark-plus"></i>
-        </a>
+      <!-- Navigation chevrons -->
+      <div class="absolute inset-0 flex items-center justify-between px-2 transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+        <button class="p-2 text-white transition rounded-full bg-black/40 hover:bg-black/60">
+          <i class="text-3xl bx bxs-chevron-left md:text-4xl"></i>
+        </button>
+        <button class="p-2 text-white transition rounded-full bg-black/40 hover:bg-black/60">
+          <i class="text-3xl bx bxs-chevron-right md:text-4xl"></i>
+        </button>
       </div>
+    </div>
 
-      <!-- Movie info -->
-      <div class="flex flex-col text-white">
-        <i class="hidden md:block p-1 text-5xl cursor-pointer transition hover:text-[var(--website-theme-color)] bx bx-play-circle"></i>
-        <div>
-          <h2 class="mb-1 text-2xl font-semibold">{{ popular_movies.0.title }}</h2>
-          <p class="text-lg text-gray-300">Watch the trailer</p>
-          <p class="flex items-center gap-2 mt-1 text-base text-gray-300">
-            <i class="text-lg bx bx-heart"></i> {{ popular_movies.0.likes }}
-          </p>
+    <a href="{% url 'room' popular_movies.0.id %}" class="block">
+      <div class="absolute bottom-0 left-0 z-10 flex items-end w-full gap-4 px-4 py-4 bg-gradient-to-b from-transparent via-black/80 to-black md:px-6 md:py-6">
+        
+        <!-- Poster image -->
+        <div class="hidden md:block flex-shrink-0 w-[25%] max-w-[150px] aspect-[2/3] relative">
+          <img src="{{ popular_movies.0.poster_url }}" alt="movie-poster"
+            class="object-cover w-full h-full transition rounded-md hover:brightness-90"
+            loading="lazy" />
+          <a href="{% url 'add_to_watchlist' popular_movies.0.id %}"
+            class="absolute top-2 right-2 p-1 bg-black/60 rounded-full hover:bg-[var(--website-theme-color)] transition">
+            <i class="text-xl text-white bx bx-bookmark-plus"></i>
+          </a>
+        </div>
+
+        <!-- Movie info -->
+        <div class="flex flex-col w-full text-white md:w-auto">
+          <div class="flex items-center gap-4">
+            <i class="bx bx-play-circle text-4xl md:text-5xl cursor-pointer hover:text-[var(--website-theme-color)] transition"></i>
+            <div>
+              <h2 class="text-xl font-semibold md:text-2xl line-clamp-1">{{ popular_movies.0.title }}</h2>
+              <p class="text-sm text-gray-300 md:text-base">Watch the trailer</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 mt-2">
+            <span class="flex items-center gap-1 text-sm text-gray-300 md:text-base">
+              <i class="text-red-500 bx bx-heart"></i> {{ popular_movies.0.likes }}
+            </span>
+            <span class="text-sm text-gray-300 md:text-base">
+              {{ popular_movies.0.release_date|date:"Y" }}
+            </span>
+          </div>
         </div>
       </div>
-
-    </div>
-  </a>
-</div>
-
+    </a>
+  </div>
 
   <!-- Movie-list section -->
-  <div class="w-full lg:w-[30%] h-auto lg:h-[560px] bg-transparent rounded-md flex flex-col items-start gap-3 px-4">
-    <h2 class="text-xl font-semibold text-[var(--website-theme-color)]">Up next</h2>
-    <div class="flex flex-col w-full gap-4 px-2 rounded-lg bg-gradient-to-b from-neutral-900 via-neutral-900 to-transparent">
+  <div class="w-full lg:w-[30%] h-auto lg:max-h-[500px] bg-transparent rounded-xl flex flex-col items-start gap-4">
+    <div class="flex items-center justify-between w-full px-2">
+      <h2 class="text-xl font-semibold text-[var(--website-theme-color)]">Up next</h2>
+      <a href="{% url 'top-50-movies' %}" class="text-sm text-gray-400 hover:text-[var(--website-theme-color)] transition flex items-center gap-1">
+        View all <i class="text-lg bx bx-chevron-right"></i>
+      </a>
+    </div>
+    
+    <div class="w-full h-full px-2 py-1 space-y-3 overflow-y-auto rounded-lg custom-scrollbar bg-gradient-to-b from-neutral-900 via-neutral-900 to-transparent">
       {% for movie in additional_movies %}
-      <a href="{% url 'room' movie.id %}" class="w-full">
-        <div class="flex items-center gap-4 w-full h-[150px] cursor-pointer">
-          <img src="{{ movie.poster_url }}" alt="movie-poster" class="w-[90px] h-[130px] rounded-md object-cover" />
-          <div>
-            <h3 class="text-base text-white">{{ movie.title }}</h3>
-            <p class="text-sm text-gray-300">Release Date: {{ movie.release_date }}</p>
-            <p class="flex items-center gap-2 text-sm text-gray-300">
-              <i class="bx bx-heart"></i>{{ movie.likes }}
-            </p>
+      <a href="{% url 'room' movie.id %}" class="block w-full p-2 transition rounded-lg hover:bg-neutral-800/50">
+        <div class="flex items-center w-full gap-3">
+          <div class="flex-shrink-0 w-16 sm:w-20 aspect-[2/3] relative">
+            <img src="{{ movie.poster_url }}" alt="movie-poster" 
+              class="object-cover w-full h-full rounded-md"
+              loading="lazy" />
+            <div class="absolute inset-0 transition bg-black/20 hover:bg-transparent"></div>
+          </div>
+          <div class="flex-grow">
+            <h3 class="text-sm font-medium text-white sm:text-base line-clamp-1">{{ movie.title }}</h3>
+            <p class="text-xs text-gray-400 sm:text-sm">{{ movie.release_date|date:"M d, Y" }}</p>
+            <div class="flex items-center gap-2 mt-1">
+              <span class="flex items-center gap-1 text-xs text-gray-400 sm:text-sm">
+                <i class="text-red-500 bx bx-heart"></i> {{ movie.likes }}
+              </span>
+              <span class="text-xs text-gray-400 sm:text-sm">
+                {{ movie.rating|default:"NR" }}
+              </span>
+            </div>
           </div>
         </div>
       </a>
       {% endfor %}
     </div>
-    <a href="{% url 'top-50-movies' %}" class="text-white hover:text-[var(--website-theme-color)] text-base flex items-center gap-1 transition">
-      Browse More <i class="bx bx-chevron-right"></i>
-    </a>
   </div>
 </div>
 

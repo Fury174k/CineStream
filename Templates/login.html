@@ -1,27 +1,85 @@
 <head>
    {% load static %}
-   <link rel="stylesheet" href='{% static "css/login.css" %}'></link>
+   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<form method="post" action="{% url 'login' %}" id="login_form">
-    {% csrf_token %}
-   
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
 
-    <label for="username">Username:</label>
-    <input type="text" name="username" id="username_field" />
-    
-    <label for="password">Password:</label>
-    <input type="password" name="password" id="password_field" />
+<body class="flex items-center justify-center min-h-screen p-4 bg-gray-900">
+   <div class="w-full max-w-md">
+      <div class="overflow-hidden bg-gray-800 shadow-2xl rounded-xl">
+         <div class="p-1 bg-gradient-to-r from-blue-600 to-blue-400">
+            <div class="p-8 bg-gray-800 rounded-t-lg">
+               <h1 class="mb-2 text-3xl font-bold text-center text-white">Welcome Back</h1>
+               <p class="mb-8 text-center text-gray-400">Sign in to your account</p>
+               
+               {% if messages %}
+               <div class="mb-6 space-y-2">
+                  {% for message in messages %}
+                  <div class="px-4 py-3 text-red-200 border border-red-700 rounded-lg bg-red-900/30">
+                     {{ message }}
+                  </div>
+                  {% endfor %}
+               </div>
+               {% endif %}
 
-    <button type="submit" id="login_button">Login</button>
-    <a href="#" id="forgot_password">Forgotten Password?</a>
-    <a href="{% url 'register' %}">Create New Account</a>
-</form>
+               <form method="post" action="{% url 'login' %}">
+                  {% csrf_token %}
+                  <div class="space-y-5">
+                     <div>
+                        <label for="username" class="block mb-2 text-sm font-medium text-gray-300">Username</label>
+                        <div class="relative">
+                           <input 
+                              type="text" 
+                              name="username" 
+                              id="username_field" 
+                              class="w-full px-4 py-3 text-white placeholder-gray-400 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              placeholder="Enter your username"
+                           >
+                        </div>
+                     </div>
+                     
+                     <div>
+                        <label for="password" class="block mb-2 text-sm font-medium text-gray-300">Password</label>
+                        <div class="relative">
+                           <input 
+                              type="password" 
+                              name="password" 
+                              id="password_field" 
+                              class="w-full px-4 py-3 text-white placeholder-gray-400 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              placeholder="••••••••"
+                           >
+                        </div>
+                     </div>
+                     
+                     <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                           <input id="remember-me" name="remember-me" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+                           <label for="remember-me" class="block ml-2 text-sm text-gray-300">Remember me</label>
+                        </div>
+                        <a href="#" class="text-sm text-blue-400 hover:text-blue-300">Forgot password?</a>
+                     </div>
+                     
+                     <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-medium py-3 px-4 rounded-lg transition duration-200 ease-in-out transform hover:scale-[1.02]">
+                        Sign in
+                     </button>
+                  </div>
+               </form>
+            </div>
+         </div>
+         
+         <div class="px-8 py-6 text-center border-t border-gray-700 bg-gray-800/50">
+            <p class="text-gray-400">
+               Don't have an account? 
+               <a href="{% url 'register' %}" class="font-medium text-blue-400 hover:text-blue-300">Sign up</a>
+            </p>
+         </div>
+      </div>
+      
+      <div class="mt-8 text-center">
+         <p class="text-sm text-gray-500">
+            © 2023 Your Company. All rights reserved.
+         </p>
+      </div>
+   </div>
+</body>
 
 

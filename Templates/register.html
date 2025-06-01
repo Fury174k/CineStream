@@ -5,43 +5,141 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body>
-    <div class="container">
-        <h2>Register</h2>
-        <form method="post" action="">
-            {% csrf_token %}
-            
+<body class="flex items-center justify-center min-h-screen p-4 bg-gray-100">
+    <div class="w-full max-w-md overflow-hidden bg-white shadow-lg rounded-xl">
+        <!-- Form Header -->
+        <div class="p-6 text-center bg-gradient-to-r from-blue-600 to-blue-500">
+            <h2 class="text-2xl font-bold text-white">Create Your Account</h2>
+            <p class="mt-1 text-blue-100">Join our community today</p>
+        </div>
+
+        <!-- Form Container -->
+        <div class="p-6 sm:p-8">
             {% if messages %}
-            <ul class="messages">
+            <div class="mb-4 space-y-2">
                 {% for message in messages %}
-                <li>{{ message }}</li>
+                <div class="p-3 text-red-700 bg-red-100 border-l-4 border-red-500 rounded">
+                    <span class="font-medium">Notice:</span> {{ message }}
+                </div>
                 {% endfor %}
-            </ul>
+            </div>
             {% endif %}
 
-            <label for="first_name">First Name:</label>
-            <input type="text" name="first_name" id="first_name" required>
-            
-            <label for="last_name">Last Name:</label>
-            <input type="text" name="last_name" id="last_name" required>
-            
-            <label for="username">Username:</label>
-            <input type="text" name="username" id="username" required>
-            
-            <label for="email">Email:</label>
-            <input type="email" name="email" id="email" required>
-            
-            <label for="password1">Password:</label>
-            <input type="password" name="password1" id="password1" required>
-            
-            <label for="password2">Confirm Password:</label>
-            <input type="password" name="password2" id="password2" required>
-            
-            <input type="submit" value="Register" id="register_button">
-        </form>
-        <a href="#" id="forgot_password">Forgotten Password?</a>
+            <form method="post" action="" class="space-y-4">
+                {% csrf_token %}
+                
+                <!-- Name Fields -->
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div>
+                        <label for="first_name" class="block mb-1 text-sm font-medium text-gray-700">First Name</label>
+                        <div class="relative">
+                            <input type="text" name="first_name" id="first_name" required
+                                class="w-full px-4 py-2 transition border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="John">
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                <i class="text-gray-400 fas fa-user"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="last_name" class="block mb-1 text-sm font-medium text-gray-700">Last Name</label>
+                        <div class="relative">
+                            <input type="text" name="last_name" id="last_name" required
+                                class="w-full px-4 py-2 transition border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Doe">
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                <i class="text-gray-400 fas fa-user"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Username -->
+                <div>
+                    <label for="username" class="block mb-1 text-sm font-medium text-gray-700">Username</label>
+                    <div class="relative">
+                        <input type="text" name="username" id="username" required
+                            class="w-full px-4 py-2 transition border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="johndoe">
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <i class="text-gray-400 fas fa-at"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label for="email" class="block mb-1 text-sm font-medium text-gray-700">Email</label>
+                    <div class="relative">
+                        <input type="email" name="email" id="email" required
+                            class="w-full px-4 py-2 transition border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="john@example.com">
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <i class="text-gray-400 fas fa-envelope"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Password Fields -->
+                <div>
+                    <label for="password1" class="block mb-1 text-sm font-medium text-gray-700">Password</label>
+                    <div class="relative">
+                        <input type="password" name="password1" id="password1" required
+                            class="w-full px-4 py-2 transition border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="••••••••">
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                            <i class="text-gray-400 cursor-pointer fas fa-eye-slash toggle-password" data-target="password1"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="password2" class="block mb-1 text-sm font-medium text-gray-700">Confirm Password</label>
+                    <div class="relative">
+                        <input type="password" name="password2" id="password2" required
+                            class="w-full px-4 py-2 transition border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="••••••••">
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                            <i class="text-gray-400 cursor-pointer fas fa-eye-slash toggle-password" data-target="password2"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="register_button"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Register Now
+                </button>
+            </form>
+
+            <!-- Additional Links -->
+            <div class="mt-6 text-sm text-center">
+                <a href="#" id="forgot_password" class="font-medium text-blue-600 hover:text-blue-800">
+                    Forgot Password?
+                </a>
+                <p class="mt-2 text-gray-600">
+                    Already have an account? 
+                    <a href="{% url 'login' %}" class="font-medium text-blue-600 hover:text-blue-800">Sign In</a>
+                </p>
+            </div>
+        </div>
     </div>
+
+    <!-- Password toggle script -->
+    <script>
+        document.querySelectorAll('.toggle-password').forEach(icon => {
+            icon.addEventListener('click', function() {
+                const target = this.getAttribute('data-target');
+                const input = document.getElementById(target);
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+                this.classList.toggle('fa-eye-slash');
+                this.classList.toggle('fa-eye');
+            });
+        });
+    </script>
 </body>
 </html>
